@@ -1,2 +1,6 @@
 numpy
 matplotlib
+networkx
+scipy
+numba
+pandas
