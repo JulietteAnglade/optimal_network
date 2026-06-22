@@ -35,6 +35,17 @@ class TauLink(Functions):
 class TimeLink(Functions):
     pass
 
+class WaitingTimeLink(Functions):
+    pass
+
+class ParkingSearchTimeNode(Functions):
+    pass
+
+class BoardingTimeLink(Functions):
+    pass
+
+#check whether we need to add other class for other functions
+
 
 @dataclass
 class Network:
@@ -47,9 +58,9 @@ class Network:
     kappa: np.ndarray = field(default_factory=lambda: np.array([], dtype=float))
     I_min: np.ndarray = field(default_factory=lambda: np.array([], dtype=float))
     I_max: np.ndarray = field(default_factory=lambda: np.array([], dtype=float))
-    link_dependance_tau: np.ndarray = field(default_factory=lambda: np.array([], dtype=float)) #this needs to be replaced by the whole function. Needs to handle sector dependance too
-    link_dependance_t: np.ndarray = field(default_factory=lambda: np.array([], dtype=float)) # this needs to be replaced by the whole function - maybe the shape of the function is a variable of the mode ?
-    zone_to_nodes: Optional[np.ndarray] = None
+    link_dependance_tau: np.ndarray = field(default_factory=lambda: np.array([], dtype=float)) #à supprimer, la dépendance en link sera gérée directement dans la fonction tau_link
+    link_dependance_t: np.ndarray = field(default_factory=lambda: np.array([], dtype=float)) #pareil à supprimer, la dépendance en link sera gérée directement dans la fonction t_link
+    zone_to_nodes: Optional[np.ndarray] = None # à unifier avec la variable mode_to_nodes, pour avoir un seul mapping zone -> node par mode
     zone_to_node: Optional[np.ndarray] = None
     mode_to_nodes: Optional[np.ndarray] = None
     original_edges: np.ndarray = field(default_factory=lambda: np.array([], dtype=int))
@@ -72,6 +83,7 @@ class Network:
 
 @dataclass
 class ModelParams:
+    #several parameters need to be added to align to the new enriched model --> add them
     """Economic model parameters."""
     # ---- Sizes ----
     n_zones: int                                  # |I|
@@ -111,6 +123,7 @@ class ModelParams:
 @dataclass
 class ModelState:
     """Current state: prices, quantities, flows."""
+    # Several variables need to be added to align with the new enriched model 
     # ---- Prices (outer loop) ----
     p: np.ndarray                                 # goods prices,    shape (S, J)
     w: np.ndarray                                 # wages,           shape (S, J)
@@ -151,6 +164,7 @@ class ModelState:
 
 @dataclass
 class AlgoParams:
+    #Need to figure out if adding new hyperparameters is necessary for the new enriched model
     # Outer loop
     T_outer: int = 200
     eta_beta: float = 0.01
@@ -181,6 +195,10 @@ class AlgoParams:
     decay_start: int = 0
     decay_type: str = "sqrt"
 
+
+    #Here simulated annealing and MSA needs to be more cleary coded
+    #Check the code of simulated annealing
+    # Check the code of MSA --> maybe replace linear decay by MSA as MSA will not be needed anymore. 
     # Simulated Annealing
     sa_enabled: bool = False
     sa_T_init : float = 5.0 #intial temperature

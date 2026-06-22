@@ -20,7 +20,7 @@ def _mult_step(x, ed, eta, lo=1e-8):
     return np.clip(x_new, lo, 1e8)
 
 
-class ExcessDemand:
+class ExcessDemand: #to kill, will be put in the gradient descent dual block
     def compute(self, state, params):
         S, I = params.n_sectors, params.n_zones
         net  = params.network
@@ -62,7 +62,8 @@ class ExcessDemand:
         # ---- Infrastructure budget
         self.ED_infra = float((net.kappa * state.I_infra).sum() - params.K) # scalar, normalized by K
 
-class StoppingCriterion:
+class StoppingCriterion: 
+    # to change completely, define one in the max gradient for inner loop and one for the outer loop
     def transport(self, state: ModelState, gamma_old, params: ModelParams) -> dict:
 
         eps_Qhat = 1E-8
@@ -150,6 +151,7 @@ class StoppingCriterion:
 
 
 class PriceUpdater:
+    #to kill, this will be done in the gradient descent dual block
     def __init__(self, excess_demand_block: ExcessDemand):
         self.ed = excess_demand_block
 
@@ -167,6 +169,7 @@ class PriceUpdater:
 
 
 class TransportSolver:
+    #to kill 
     def __init__(self, transport_block: TransportBlock):
         self.transport_block = transport_block
         self.logger = ConvergenceLoggerInner()
@@ -189,6 +192,7 @@ class TransportSolver:
                 raise ValueError(f"Inner loop diverging at outer iter {t_outer}, inner iter {t}: dQ={dQ:.4e}, dg={dg:.4e}")
 
 class AllocationSolver:
+    #to kill as well --> replace by inner loop
     def __init__(self, household_block, production_block, transport_block, excess_demand_block, price_updater):
         self.household_block = household_block
         self.production_block = production_block
@@ -236,6 +240,8 @@ class AllocationSolver:
 
 
 class UrbanModelSolver:
+    #Keep this class but change it a lot: it has to become the main solver that is supposed to call both the inner and the outer loop. 
+    #Need to be careful with the output, must remain the same as before. 
     def __init__(self, household_block, production_block, transport_block,
                  infrastructure_block, excess_demand_block, price_updater):
         self.household_block      = household_block

@@ -87,6 +87,7 @@ class ProductionBlock:
 
 
 class HouseholdBlock:
+    #to be merged with production block and logit allocation of population to become the primal-closed form loop
     def solve(self, state: ModelState, params: ModelParams):
         S, I = params.n_sectors, params.n_zones
         
@@ -138,6 +139,7 @@ class ProductionBlock:
         state.Q_inter[:] = Q_inp
 
 class TransportBlock:
+    #will still exist but no more flow aggregation, neither congestion update, will only compute the shortest paths and the potential of nodes (although I still need to figure out how to handle this in terms of memory)
     def __init__(self):
         self.commuters = CommuterSubBlock()
         self.goods = GoodsSubBlock()
@@ -293,6 +295,7 @@ class CommuterSubBlock:
                     self.dist[s, i, j] = d[best_dest]
 
     def compute_allocation(self, state, params):
+        #To kill, will be done in the primal closed form loop
         # 1. Calcul de l'utilité indirecte global (U shape: S, I, I)
         U = params.utility_function(state.c, state.l_res, state.f)
         
@@ -333,6 +336,7 @@ class CommuterSubBlock:
         )
 
     def accumulate_flows(self, state, params, hyperparams, t):
+        #to kill as well, will be done in a dedicated block called in the inner loop
         new_q = _fast_accumulate(
             params.n_sectors, params.n_zones, params.network.n_nodes, params.network.n_edges,
             state.q_pop, self.best_dest, self.pred_node, self.pred_edge, self._zone_matrix
@@ -836,6 +840,7 @@ class GoodsSubBlock:
                 self.next_edge[s, j] = nxt_edge
 
     def compute_surplus(self, state, params):
+        #to kill
         net = params.network
         S, I = params.n_sectors, params.n_zones
 
@@ -849,6 +854,7 @@ class GoodsSubBlock:
         )
 
     def update_volumes(self, state, params, hyperparams, t):
+        #to kill, will be done in the gradient ascent primal block
         a = hyperparams.eta(hyperparams.alpha_Q, t)
         
         # Vectorized volume update mapping across S, I, J
@@ -864,6 +870,7 @@ class GoodsSubBlock:
         state.Q_tilde = state.Q_ship * state.tau_eff
 
     def accumulate_flows(self, state, params, hyperparams, t):
+        #to kill, will be done in a dedicated block called in the inner loop
         net = params.network
         S, I = params.n_sectors, params.n_zones
 
@@ -896,6 +903,7 @@ class GoodsSubBlock:
 
 
 class FlowAggregator:
+    #rename ImpliedFlowsBlock: compute the implied flows and congestion costs gammas from the current state of the system
     def update_qhat(self, state, params, hyperparams=None, t=0):
         # Qhat_{nn'} = sum_s (phi_s/d_w) Q^{s,goods}_{nn'} + sum_s q^s_{nn'}
         weighted_goods   = (params.phi[:, None, None] / params.d_w) * state.Q_hat_sj_goods
@@ -931,8 +939,15 @@ class FlowAggregator:
         state.gamma = np.maximum(0.0, state.gamma + delta)
     
 
+class CongestionBlock:
+    """
+    MSA update of flows and congestion costs. Part of the outer loop of the solver. """
+    pass 
+
 
 class InfrastructureBlock:
+    """ Modifications might be needed because this is now part of the outer loop of the solver + need to add the upadte of beta)
+    """
     def update(self, state, params, hyperparams, t):
         net = params.network
         dT_dI   = np.asarray(params.t_link.gradient(state.Q_hat, state.I_infra, var='I'))

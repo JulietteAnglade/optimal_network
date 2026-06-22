@@ -202,6 +202,7 @@ class CobbDouglasProduction(ProductionFunction):
             return Y, H, L, Q_inp
     
 class CobbDouglasCrsProduction(ProductionFunction):
+    #to kill as we only consider decreasing returns to scale production functions
     """
     Y = A * H^aH * L^aL * prod_k Q_k^{aQ_k}, with sum(a) = 1.
     A:     (S, J)
@@ -256,6 +257,7 @@ class CobbDouglasCrsProduction(ProductionFunction):
         return Y, H, L, Q
     
 class QuadraticProduction(ProductionFunction):
+    #to kill, as we will not use it anymore
     """
     Y = A_s_j * (alpha_H H + alpha_L L + alpha_Q.Q) - 0.5 * (beta_H H^2 + beta_L L^2 + beta_Q.Q^2)
     """
@@ -320,6 +322,7 @@ class QuadraticProduction(ProductionFunction):
 
 
 class IcebergTau(TauLink):
+    #to change as now I want a function that is truly link dependent, that is to say I want to define two objects : one at the link level that is to say the tau_nn'^s and the matrix of all functions tau_nn'^s that as to take as input the matrix Q_hat and I.
     """
     tau^s_e = exp(-delta_s * tau_scale_e * (1 + a*(Qhat_e/I_e)^b))
 
@@ -377,6 +380,7 @@ class IcebergTau(TauLink):
 
 
 class BPRTime(TimeLink):
+    #Same as for tau
     """
     T_{nn'} = T0 * (1 + a * (Qhat / I)^b).
     T0:   shape (n_edges,)
@@ -398,3 +402,5 @@ class BPRTime(TimeLink):
         if var == 'I':
             return -self.T0 * self.a * self.b * ratio ** self.b / np.maximum(I, 1e-8)
         raise ValueError(f"unknown var={var}")
+
+#Also need to implement the classes for parking time search, waiting time, boarding time etc...
