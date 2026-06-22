@@ -34,7 +34,179 @@ class RealWorldNetwork:
             )
 
 
+
+
 class NetworkEncoder:
+    def __init__(self, real_world_network: RealWorldNetwork):
+        self.network = real_world_network
+        self.edges = []
+        self.original_edges = []
+        self.n_nodes = self.network.n_locations * self.network.n_modes
+        
+        # Internal tracker to keep parameters perfectly aligned with active edges
+        # Format: ('transport', mode, i, j) or ('transfer', zone, from_mode, to_mode)
+        self._active_edge_blueprints = []
+
+    def _zone_node(self, zone: int, mode: int) -> int:
+        return int(zone + mode * self.network.n_locations)
+
+    def create_edges(self):
+        n = self.network.n_locations
+        m = self.network.n_modes
+        edges = []
+        original = []
+        blueprints = []
+
+        # 1. Transport edges: valid only if the link has existing infra or capacities > 0
+        infra = self.network.current_infra_level
+        capacity = self.network.capacity
+
+        for mode in range(m):
+            for i in range(n):
+                for j in range(n):
+                    if i == j:
+                        continue
+                    
+                    # Filter condition to avoid generating a complete graph
+                    if infra[mode, i, j] > 0.0 or capacity[mode, i, j] > 0.0:
+                        u = self._zone_node(i, mode)
+                        v = self._zone_node(j, mode)
+                        edges.append((u, v))
+                        original.append((i, j))
+                        blueprints.append(('transport', mode, i, j))
+
+        # 2. Intermodal transfer edges within the same zone
+        if m > 1:
+            for zone in range(n):
+                for from_mode in range(m):
+                    for to_mode in range(m):
+                        if from_mode == to_mode:
+                            continue
+                        u = self._zone_node(zone, from_mode)
+                        v = self._zone_node(zone, to_mode)
+                        edges.append((u, v))
+                        blueprints.append(('transfer', zone, from_mode, to_mode))
+
+        self.edges = edges
+        self.original_edges = list(dict.fromkeys(original))
+        self._active_edge_blueprints = blueprints
+
+    def create_time_paramters(self) -> np.ndarray:
+        T0 = []
+        large = 1e20
+        distances = self.network.distance_matrix
+
+        for blueprint in self._active_edge_blueprints:
+            if blueprint[0] == 'transport':
+                _, mode, i, j = blueprint
+                _, commuters_allowed = self.network.constraints[mode]
+                if commuters_allowed:
+                    T0.append(distances[i, j] / self.network.type_of_modes[mode].speed)
+                else:
+                    T0.append(large)
+            
+            elif blueprint[0] == 'transfer':
+                _, zone, from_mode, to_mode = blueprint
+                _, commuters_allowed_from = self.network.constraints[from_mode]
+                _, commuters_allowed_to = self.network.constraints[to_mode]
+                if commuters_allowed_from and commuters_allowed_to:
+                    T0.append(1.0)
+                else:
+                    T0.append(large)
+
+        return np.asarray(T0, dtype=float)
+
+    def create_iceberg_cost_parameters(self) -> np.ndarray:
+        mask = []
+        tau_scale = []
+        distances = self.network.distance_matrix
+
+        for blueprint in self._active_edge_blueprints:
+            if blueprint[0] == 'transport':
+                _, mode, i, j = blueprint
+                goods_allowed, _ = self.network.constraints[mode]
+                mask.append(1.0 if goods_allowed else 0.0)
+                tau_scale.append(distances[i, j] / self.network.type_of_modes[mode].speed)
+            
+            elif blueprint[0] == 'transfer':
+                _, zone, from_mode, to_mode = blueprint
+                goods_allowed_from, _ = self.network.constraints[from_mode]
+                goods_allowed_to, _ = self.network.constraints[to_mode]
+                mask.append(1.0 if goods_allowed_from and goods_allowed_to else 0.0)
+                tau_scale.append(0.0)
+
+        return np.asarray(mask, dtype=float), np.asarray(tau_scale, dtype=float)
+
+    def create_infra_bounds(self) -> np.ndarray:
+        I_min = []
+        I_max = []
+        volumes = self.network.current_infra_level
+        capacities = self.network.capacity
+
+        for blueprint in self._active_edge_blueprints:
+            if blueprint[0] == 'transport':
+                _, mode, i, j = blueprint
+                I_min.append(volumes[mode, i, j])
+                I_max.append(capacities[mode, i, j])
+            
+            elif blueprint[0] == 'transfer':
+                I_min.append(1.0)
+                I_max.append(5.0)
+
+        return np.vstack([np.asarray(I_min, dtype=float), np.asarray(I_max, dtype=float)]).T
+
+    def create_infra_cost_parameters(self) -> np.ndarray:
+        kappa = []
+
+        for blueprint in self._active_edge_blueprints:
+            if blueprint[0] == 'transport':
+                _, mode, i, j = blueprint
+                kappa.append(self.network.type_of_modes[mode].cost_per_km)
+            
+            elif blueprint[0] == 'transfer':
+                _, zone, from_mode, to_mode = blueprint
+                kappa.append(0.5 * (
+                    self.network.type_of_modes[from_mode].cost_per_km
+                    + self.network.type_of_modes[to_mode].cost_per_km
+                ))
+
+        return np.asarray(kappa, dtype=float)
+
+    def encode(self) -> Network:
+        self.create_edges()
+        edges = self.edges
+        T0 = self.create_time_paramters()
+        tau_mask, tau_scale = self.create_iceberg_cost_parameters()
+        infra_bounds = self.create_infra_bounds()
+        kappa = self.create_infra_cost_parameters()
+
+        zone_to_nodes = np.asarray([
+            [self._zone_node(zone, mode) for mode in range(self.network.n_modes)]
+            for zone in range(self.network.n_locations)
+        ], dtype=int)
+        mode_to_nodes = np.asarray([
+            [self._zone_node(zone, mode) for zone in range(self.network.n_locations)]
+            for mode in range(self.network.n_modes)
+        ], dtype=int)
+
+        return Network(
+            n_zones=self.network.n_locations,
+            n_nodes=self.n_nodes,
+            edges=self.edges,
+            n_modes=self.network.n_modes,
+            n_edges=len(edges),
+            kappa=kappa,
+            I_min=infra_bounds[:, 0].astype(float),
+            I_max=infra_bounds[:, 1].astype(float),
+            link_dependance_tau=(tau_mask, tau_scale),
+            link_dependance_t=T0,
+            zone_to_nodes=zone_to_nodes,
+            zone_to_node=zone_to_nodes,
+            mode_to_nodes=mode_to_nodes,
+            original_edges=self.original_edges
+        )
+
+""" class NetworkEncoder:
     def __init__(self, real_world_network: RealWorldNetwork):
         self.network = real_world_network
         self.edges = []
@@ -224,3 +396,4 @@ class NetworkEncoder:
         )
 
 
+ """

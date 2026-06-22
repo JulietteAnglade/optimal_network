@@ -60,7 +60,7 @@ class ExcessDemand:
         
 
         # ---- Infrastructure budget
-        self.ED_infra = float((net.kappa * state.I_infra).sum() - params.K)/params.K  # scalar, normalized by K
+        self.ED_infra = float((net.kappa * state.I_infra).sum() - params.K) # scalar, normalized by K
 
 class StoppingCriterion:
     def transport(self, state: ModelState, gamma_old, params: ModelParams) -> dict:
@@ -220,9 +220,8 @@ class AllocationSolver:
                          + np.linalg.norm(state.w - w_old)
                          + np.linalg.norm(state.r - r_old))
             
-            if hyperparams.verbose and t % hyperparams.log_every == 0:
-                print(f"[outer {t:4d}] |ED|={ed_norm:.4e}  |Δprice|={dprice:.4e}")
-            
+            #if hyperparams.verbose and t % hyperparams.log_every == 0:
+                #print(f"  [alloc {t:4d}] |ED|={ed_norm:.4e}  |Δprice|={dprice:.4e}")
 
             prices= [state.p, state.w, state.r]
             production= state.Y

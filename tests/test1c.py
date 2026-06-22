@@ -28,8 +28,8 @@ def main():
         [[0, 0], [0, 0]],
     ])
     capacity = np.array([
-        [[12.0, 20.0], [6.0, 20.0]],
-        [[30.0, 10.0], [10.0, 30.0]],
+        [[12.0, 20.0], [20.0, 12.0]],
+        [[30.0, 20.0], [20.0, 30.0]],
     ])
     constraints = np.array([
         [1, 1],  # goods_allowed, commuters_allowed for car
@@ -57,7 +57,7 @@ def main():
     q_bar = 20.0
     K = 300
 
-    sector_dependance_tau = np.array([0.015, 0.035])
+    sector_dependance_tau = np.array([0.035, 0.035])
     tau_link = IcebergTau
     t_link = BPRTime
 
@@ -86,7 +86,7 @@ def main():
     decay_start = 0
     decay_type = None
 
-    example_name = 'test_example1b1'
+    example_name = 'test_example1c1'
     
     # ----------------- 4. run ----------------------------------------
     run(
@@ -140,7 +140,7 @@ def main():
 
     types_of_modes = [
         ModeOfTransport(name='Car', speed=50.0, cost_per_km=1),
-        ModeOfTransport(name='Train', speed=90.0, cost_per_km=2.5),
+        ModeOfTransport(name='Train', speed=90.0, cost_per_km=10),
     ]
 
     distance_matrix = np.array([
@@ -152,8 +152,8 @@ def main():
         [[0, 0], [0, 0]],
     ])
     capacity = np.array([
-        [[12.0, 20.0], [6.0, 20.0]],
-        [[30.0, 10.0], [10.0, 30.0]],
+        [[12.0, 20.0], [20.0, 12.0]],
+        [[30.0, 20.0], [20.0, 30.0]],
     ])
     constraints = np.array([
         [1, 1],  # goods_allowed, commuters_allowed for car
@@ -181,7 +181,7 @@ def main():
     q_bar = 20.0
     K = 300
 
-    sector_dependance_tau = np.array([0.015, 0.035])
+    sector_dependance_tau = np.array([0.035, 0.035])
     tau_link = IcebergTau
     t_link = BPRTime
 
@@ -210,7 +210,7 @@ def main():
     decay_start = 0
     decay_type = None
 
-    example_name = 'test_example1b2'
+    example_name = 'test_example1c2'
     
     # ----------------- 4. run ----------------------------------------
     run(
@@ -263,7 +263,7 @@ def main():
 
     types_of_modes = [
         ModeOfTransport(name='Car', speed=50.0, cost_per_km=1),
-        ModeOfTransport(name='Train', speed=90.0, cost_per_km=2.5),
+        ModeOfTransport(name='Train', speed=90.0, cost_per_km=10),
     ]
 
     distance_matrix = np.array([
@@ -275,8 +275,8 @@ def main():
         [[0, 0], [0, 0]],
     ])
     capacity = np.array([
-        [[12.0, 10.0], [6.0, 10.0]],
-        [[30.0, 20.0], [10.0, 20.0]],
+        [[12.0, 10.0], [10.0, 12.0]],
+        [[30.0, 20.0], [20.0, 30.0]],
     ])
     constraints = np.array([
         [1, 1],  # goods_allowed, commuters_allowed for car
@@ -333,7 +333,7 @@ def main():
     decay_start = 0
     decay_type = None
 
-    example_name = 'test_example1b3'
+    example_name = 'test_example1c3'
     
     # ----------------- 4. run ----------------------------------------
     run(
@@ -385,7 +385,7 @@ def main():
 
     types_of_modes = [
         ModeOfTransport(name='Car', speed=50.0, cost_per_km=1),
-        ModeOfTransport(name='Train', speed=90.0, cost_per_km=2.5),
+        ModeOfTransport(name='Train', speed=90.0, cost_per_km=5),
     ]
 
     distance_matrix = np.array([
@@ -397,8 +397,8 @@ def main():
         [[0, 0], [0, 0]],
     ])
     capacity = np.array([
-        [[12.0, 10.0], [6.0, 10.0]],
-        [[30.0, 20.0], [10.0, 20.0]],
+        [[12.0, 20.0], [20.0, 12.0]],
+        [[30.0, 20.0], [20.0, 30.0]],
     ])
     constraints = np.array([
         [1, 1],  # goods_allowed, commuters_allowed for car
@@ -455,7 +455,7 @@ def main():
     decay_start = 0
     decay_type = None
 
-    example_name = 'test_example1b4'
+    example_name = 'test_example1c4'
     print(example_name)
     
     # ----------------- 4. run ----------------------------------------

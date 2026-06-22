@@ -287,29 +287,95 @@ class QuadraticProduction(ProductionFunction):
         Y = self(H, L, Q_inp, s, j)
         return Y, H, L, Q_inp
 
-class IcebergTau(TauLink):
-    """
-    tau^s_{nn'} = exp(-delta_s * Qhat_{nn'} / I_{nn'}).
-    delta: scalar or shape (S,)
-    mask: numpy array of shape (n_edges,) with 1 for edges where tau applies, 0 otherwise.
-    """
+""" class IcebergTau(TauLink):
+    
+    #tau^s_{nn'} = exp(-delta_s * Qhat_{nn'} / I_{nn'}).
+    #delta: scalar or shape (S,)
+    #mask: numpy array of shape (n_edges,) with 1 for edges where tau applies, 0 otherwise.
+    
     def __init__(self, delta, link_dependance):
         self.delta = np.atleast_1d(np.asarray(delta, dtype=float))  # (S,) or (1,)
         self.link_dependance = link_dependance
+
     def __call__(self, Q_hat, I):
-        mask, tau_scale = self.link_dependance #mask: (n_edges,) tau_scale: (n_edges)
-        ratio = Q_hat / I                              # (n_edges,)
-        return mask[None, :] * np.exp(-self.delta[:, None] * tau_scale[None, :] * ratio[None, :])   # (S, n_edges)
+        mask, tau_scale = self.link_dependance
+        ratio = np.ravel(Q_hat) / np.ravel(I) 
+        return mask * np.exp(-self.delta[:, None] * tau_scale[None, :] * ratio[None, :])
+
     def gradient(self, Q_hat, I, var):
         tau = self(Q_hat, I)                           # (S, n_edges)
         mask, tau_scale = self.link_dependance
-        I_safe = np.maximum(I[None, :], 1e-8)
+        
+        Q_hat_flat = np.ravel(Q_hat)
+        I_flat = np.ravel(I)
+        
+        I_safe = np.maximum(I_flat[None, :], 1e-8)
+        
         if var == 'Q':
             return - mask[None, :] * self.delta[:, None] / I_safe * tau
         if var == 'I':
-            return mask[None, :] * self.delta[:, None] * tau_scale[None, :] * Q_hat[None, :] / I_safe ** 2 * tau
+            return mask * self.delta[:, None] * tau_scale[None, :] * Q_hat_flat[None, :] / (I_safe ** 2) * tau
+            
+        raise ValueError(f"unknown var={var}") """
+
+
+class IcebergTau(TauLink):
+    """
+    tau^s_e = exp(-delta_s * tau_scale_e * (1 + a*(Qhat_e/I_e)^b))
+
+    delta: (S,)
+    a,b: congestion parameters (same as BPRTime)
+    link_dependance: (mask, tau_scale)
+    """
+
+    def __init__(self, delta, link_dependance, a=0.6, b=6.0):
+        self.delta = np.atleast_1d(np.asarray(delta, dtype=float))
+        self.link_dependance = link_dependance
+        self.a = float(a)
+        self.b = float(b)
+
+    def __call__(self, Q_hat, I):
+        mask, tau_scale = self.link_dependance
+
+        Q = np.ravel(Q_hat)
+        I = np.maximum(np.ravel(I), 1e-8)
+
+        ratio = np.clip(Q / I, 0.0, 10.0)
+        congestion = 1.0 + self.a * ratio**self.b
+
+        tau = mask[None, :] * np.exp(
+            -self.delta[:, None] * tau_scale[None, :] * congestion[None, :]
+        )
+
+        return tau
+
+    def gradient(self, Q_hat, I, var):
+        tau = self(Q_hat, I)
+
+        mask, tau_scale = self.link_dependance
+
+        Q = np.ravel(Q_hat)
+        I = np.maximum(np.ravel(I), 1e-8)
+
+        ratio = np.clip(Q / I, 0.0, 10.0)
+
+        common = (
+            self.delta[:, None]
+            * tau_scale[None, :]
+            * self.a
+            * self.b
+            * ratio[None, :]**(self.b - 1)
+        )
+
+        if var == 'Q':
+            return -mask[None, :] * common * tau / I[None, :]
+
+        if var == 'I':
+            return mask[None, :] * common * tau * Q[None, :] / (I[None, :]**2)
+
         raise ValueError(f"unknown var={var}")
-    
+
+
 class BPRTime(TimeLink):
     """
     T_{nn'} = T0 * (1 + a * (Qhat / I)^b).

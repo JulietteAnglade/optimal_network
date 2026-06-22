@@ -179,12 +179,12 @@ def run(
         sector_dependance_tau, tau_link, t_link, 
         d_w, phi, sigma, sigma_tilde,
         T_outer, eta_p, eta_w, eta_r, T_allocation, eta_beta, eta_I, eta_H, T_inner, alpha_Q, alpha_Qhat, eta_gamma, tol_outer, tol_inner, verbose, log_every, decay_start, decay_type,
-        example_name: str
+        example_name: str, congestion_a: float = 0.6, congestion_b: float = 6.0
     ):
 
     network = make_network(n_locations, n_modes, types_of_modes, distance_matrix, current_infra_level, capacity, constraints)
 
-    params = ModelParams(n_locations, n_sectors, production_function, utility_function, L_bar, H_bar, q_bar, K, sector_dependance_tau, tau_link(sector_dependance_tau, network.link_dependance_tau), t_link(network.link_dependance_t), d_w, phi, sigma, sigma_tilde, network)
+    params = ModelParams(n_locations, n_sectors, production_function, utility_function, L_bar, H_bar, q_bar, K, sector_dependance_tau, tau_link(sector_dependance_tau, network.link_dependance_tau, congestion_a, congestion_b), t_link(network.link_dependance_t, congestion_a, congestion_b), d_w, phi, sigma, sigma_tilde, network)
     hyperparams = AlgoParams(T_outer, eta_beta, eta_I, T_allocation, eta_p, eta_w, eta_r, eta_H, T_inner, alpha_Q, alpha_Qhat, eta_gamma, tol_outer, tol_inner, verbose, log_every, decay_start, decay_type)
 
 

@@ -47,8 +47,8 @@ class Network:
     kappa: np.ndarray = field(default_factory=lambda: np.array([], dtype=float))
     I_min: np.ndarray = field(default_factory=lambda: np.array([], dtype=float))
     I_max: np.ndarray = field(default_factory=lambda: np.array([], dtype=float))
-    link_dependance_tau: np.ndarray = field(default_factory=lambda: np.array([], dtype=float))
-    link_dependance_t: np.ndarray = field(default_factory=lambda: np.array([], dtype=float))
+    link_dependance_tau: np.ndarray = field(default_factory=lambda: np.array([], dtype=float)) #this needs to be replaced by the whole function. Needs to handle sector dependance too
+    link_dependance_t: np.ndarray = field(default_factory=lambda: np.array([], dtype=float)) # this needs to be replaced by the whole function - maybe the shape of the function is a variable of the mode ?
     zone_to_nodes: Optional[np.ndarray] = None
     zone_to_node: Optional[np.ndarray] = None
     mode_to_nodes: Optional[np.ndarray] = None
@@ -181,6 +181,18 @@ class AlgoParams:
     decay_start: int = 0
     decay_type: str = "sqrt"
 
+    # Simulated Annealing
+    sa_enabled: bool = False
+    sa_T_init : float = 5.0 #intial temperature
+    sa_alpha: float = 0.98 #cooling rate
+    sa_noise_scale: float = 0.1 #scale of the noise added to the gradients
+
+    def sa_temperature(self, t: int) -> float:
+        """Return the simulated annealing temperature at iteration t."""
+        if not self.sa_enabled:
+            return 0.0
+        return self.sa_T_init * (self.sa_alpha ** t)
+
     def eta(self, eta_base: float, t: int) -> float:
         """Return the effective step size at iteration t."""
         if self.decay_type == None or t < self.decay_start:
@@ -191,3 +203,4 @@ class AlgoParams:
         if self.decay_type == "linear":
             return eta_base / dt
         raise ValueError(f"Unknown decay_type: {self.decay_type}")
+    

@@ -484,11 +484,10 @@ class CommuterSubBlock:
     
         net = params.network
         S, I = params.n_sectors, params.n_zones
+    
 
         tau = np.asarray(params.tau_link(state.Q_hat, state.I_infra))
-        if tau.ndim == 1:
-            tau = np.broadcast_to(tau, (S, net.n_edges))
-
+    
         self.v         = np.full((S, I, net.n_nodes), -np.inf)
         self.next_node = np.full((S, I, net.n_nodes), -1, dtype=int)
         self.next_edge = np.full((S, I, net.n_nodes), -1, dtype=int)
@@ -645,8 +644,9 @@ class CommuterSubBlock:
         self.backward_bellman_ford(state, params)
         self.compute_surplus(state, params)
         self.update_volumes(state, params, hyperparams, t)
-        self.accumulate_flows(state, params, hyperparams, t)"""
-        
+        self.accumulate_flows(state, params, hyperparams, t) """
+
+    
 
 
 # =====================================================================
@@ -655,7 +655,7 @@ class CommuterSubBlock:
 
 @nb.njit
 def _fast_bellman_ford(n_nodes, dest_nodes, p_sj, tau_s, gamma_phi, u_arr, v_arr, e_arr):
-    """C-speed Bellman-Ford using flat edge lists."""
+    #C-speed Bellman-Ford using flat edge lists.
     v = np.full(n_nodes, -np.inf)
     nxt_node = np.full(n_nodes, -1, dtype=np.int32)
     nxt_edge = np.full(n_nodes, -1, dtype=np.int32)
@@ -689,7 +689,7 @@ def _fast_bellman_ford(n_nodes, dest_nodes, p_sj, tau_s, gamma_phi, u_arr, v_arr
 
 @nb.njit
 def _fast_compute_surplus(S, I, n_nodes, zone_matrix, v, nxt_node, nxt_edge, tau, p):
-    """C-speed path tracing to calculate effective transport costs and surplus."""
+    #C-speed path tracing to calculate effective transport costs and surplus.
     nu = np.full((S, I, I), -np.inf)
     tau_eff = np.zeros((S, I, I))
     active = np.zeros((S, I, I), dtype=nb.boolean)
@@ -738,14 +738,14 @@ def _fast_compute_surplus(S, I, n_nodes, zone_matrix, v, nxt_node, nxt_edge, tau
 
 @nb.njit
 def _fast_accumulate_goods(S, I, n_nodes, n_edges, zone_matrix, active, Q_ship, v, nxt_node, nxt_edge, tau):
-    """C-speed path tracing to accumulate link volumes and prices."""
+#C-speed path tracing to accumulate link volumes and prices.
     new_goods = np.zeros((S, I, n_edges))
     new_goods_price = np.zeros((S, I, n_edges))
 
     for s in range(S):
         for j in range(I):
             dst_nodes = zone_matrix[j]
-            is_dst = np.zeros(n_nodes, dtype=nb.boolean)
+            is_dst = np.zeros(n_nodes)
             for d in dst_nodes:
                 if d >= 0: is_dst[d] = True
 
@@ -777,7 +777,7 @@ def _fast_accumulate_goods(S, I, n_nodes, n_edges, zone_matrix, active, Q_ship, 
                     cur = nxt
                     steps += 1
 
-    return new_goods, new_goods_price
+    return new_goods, new_goods_price 
 
 
 class GoodsSubBlock:
@@ -788,7 +788,7 @@ class GoodsSubBlock:
         self._zone_matrix = None
 
     def _prepare_numba_graph(self, net, I):
-        """Flattens adj_in for Numba iteration ONCE."""
+        #Flattens adj_in for Numba iteration ONCE.
         if self._u_arr is None:
             u_list, v_list, e_list = [], [], []
             for node_idx in range(net.n_nodes):
@@ -946,6 +946,18 @@ class InfrastructureBlock:
         violation = max(0.0, (net.kappa * state.I_infra).sum() - params.K)
         beta_eff = np.clip(state.beta * violation, 0.0, 1e8)
         I_new = state.I_infra + a * (state.gamma_I - beta_eff * net.kappa)
+
+        # Simulating annealing
+
+        if hasattr(hyperparams, 'sa_temperature'):
+            T = hyperparams.sa_temperature(t)
+            noise_scale = hyperparams.sa_noise_scale
+
+            if T > 1e-3:
+                noise = np.random.normal(0, noise_scale * T, size=I_new.shape)
+                I_new += noise*np.mean(state.I_infra)
+        
         if np.any(net.I_min > net.I_max):
             raise ValueError("Invalid infrastructure bounds: I_min must be <= I_max for all edges.")
+        
         state.I_infra = np.clip(I_new, net.I_min, net.I_max)
