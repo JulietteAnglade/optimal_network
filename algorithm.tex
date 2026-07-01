@@ -1,0 +1,495 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+% Custom colors for annotation
+\definecolor{outerblue}{RGB}{0,70,160}
+\definecolor{innerorange}{RGB}{180,80,0}
+\definecolor{fixedgray}{RGB}{90,90,90}
+
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+
+% Projection onto nonnegative reals / bounded interval
+\newcommand{\Proj}[1]{\max\left(0, #1\right)}
+\newcommand{\ProjBnd}[3]{\min\left(#3, \max\left(#2, #1\right)\right)}
+
+% Inclusive-value cascade symbol (renamed from V to avoid clash with transit vehicle flow V^m_{nn'})
+\newcommand{\IV}{\mathcal{V}}
+
+\begin{document}
+
+This technical document outlines the algorithmic architecture designed for the numerical resolution of the Generalized Spatial Economic Equilibrium problem formulated via the Social Planner's program. This document is entirely self-contained and explicitly defines all primitive functional interfaces, first-order optimality conditions (FONCs), and gradient steps to allow for a direct transcription into Python code, with no reference to any external document required.
+
+\tableofcontents
+
+\bigskip
+
+\noindent\textbf{Change log relative to the previous version of this document.} (1) The floor-space stock variables $\bar l_i^b$ (for all building types $b \in \mathcal{B} = \mathcal{B}^r \cup \mathcal{B}^{nr} \cup \mathcal{P}$, including parking floor space) are moved from the inner loop to the outer loop, updated by a plain projected gradient ascent step. (2) The parking-hours supply variable $Y_k^p$ is moved from the inner loop's closed-form analytical block to the outer loop, updated by a plain projected gradient ascent step (its closed-form inversion is no longer valid once the non-convexity of the time constraint through $T^P_k$ is taken seriously). (3) The spurious term $-\sigma_{s'}\log\omega_{s'}$ has been removed from the definition of $A^{ijsb}_{s'}$. (4) The inclusive-value cascade, previously denoted $V$, is renamed $\IV$ throughout to avoid notational collision with the transit vehicle flow $V^m_{nn'}$, and its evaluation order is made fully explicit in Section~\ref{sec:inclusive_value}. (5) Partial derivatives of every two-argument primitive function are indexed by argument position ($\partial_1$, $\partial_2$) throughout, removing all remaining notational ambiguity. (6) The transit vehicle flow $V^m_{nn'}$ is moved from the inner loop to the outer loop (plain projected gradient ascent, no annealing), since it enters the fleet availability and time constraints through $T^{m,board}_{nn'}(Q^{m,B}_{nn'}, V^m_{nn'})$ — a self-referential instance of the same non-convexity obstruction as $Y_k^p$. This forces the further promotion of its associated fleet and conservation duals $\lambda^{fleet}_m$, $\lambda^{v\_cons}_{m,n}$ to the outer loop as well, since their defining constraints involve no other inner-loop degree of freedom once $V^m_{nn'}$ is fixed within an inner loop.
+
+\section{Primitive Functions and Implementation Interface}
+\label{sec:primitives}
+
+This section lists every primitive function used in the model, its signature, the regularity properties assumed of it, and the operations the solver requires from it (value, partial gradients, and — where a closed-form inversion is used — inverse gradients). Each primitive should be implemented in code as an \emph{abstract base class} exposing exactly these methods, so that the functional form (e.g. Cobb--Douglas vs.\ CES production, BPR vs.\ other congestion functions) can be swapped without touching any solver logic.
+
+\subsection{Notation convention for partial derivatives}
+For any primitive function $\Phi(z_1, z_2)$ of two scalar (or vector, in which case the statement applies componentwise) arguments, $\partial_1 \Phi$ denotes the partial derivative with respect to the first argument $z_1$, and $\partial_2 \Phi$ the partial derivative with respect to the second argument $z_2$, both evaluated at the point supplied. This positional convention is used for every multi-argument primitive in this document, replacing all prior occurrences of $\nabla_{(\cdot)}\Phi$ or unindexed $\partial\Phi$, which were ambiguous whenever $\Phi$ had more than one argument.
+
+\subsection{Utility primitives}
+\begin{itemize}[leftmargin=*]
+    \item $U(\mathbf{c}, l, f_h) : \mathbb{R}_+^{|\mathcal{S}^T|} \times \mathbb{R}_+ \times \mathbb{R}_+ \to \mathbb{R}$: at-home utility over shipped consumption, residential floor space, and home time.
+    \item $u_{s'}(d, f) : \mathbb{R}_+\times\mathbb{R}_+ \to \mathbb{R}$ for $s' \in \mathcal{S}^T$, and $u_{s'}(f):\mathbb{R}_+\to\mathbb{R}$ for $s'\in\mathcal{S}^N$: activity sub-utilities.
+\end{itemize}
+\begin{assumption}[Utility regularity]
+$U$ and every $u_{s'}$ are twice differentiable, strictly increasing, and strictly concave in each of their arguments on the relevant domain, so that the partial gradient maps $\nabla_c U$, $\nabla_l U$, $\nabla_{f_h} U$, $\nabla_d u_{s'}$, $\nabla_{f} u_{s'}$ are strictly monotonic and therefore invertible on their range.
+\end{assumption}
+Required interface methods: \texttt{value()}, \texttt{grad(arg)} for each argument, \texttt{inv\_grad(arg, target\_price)} returning the unique $z$ solving $\partial\Phi/\partial z = \text{target\_price}$.
+
+\subsection{Production primitives}
+\begin{itemize}[leftmargin=*]
+    \item $F_j^s(H, \{L^b\}_{b\in\mathcal{B}^{nr}}, \mathbf{Q})$ for $s \in \mathcal{S}^{GS}$: commercial goods/services production.
+    \item $F_j^p(H, L)$ for $p \in \mathcal{S}^{park}$: parking-hours production.
+    \item $F^m_{nn'}(H)$ for $m \in \mathcal{M}^{\mathrm{transit}}$: transit vehicle-per-hour production.
+    \item $F^m_n(\tilde l)$: station fleet-handling capacity as a function of station land.
+\end{itemize}
+\begin{assumption}[Production regularity]
+Each $F$ above is differentiable, strictly increasing, and concave in every argument, with invertible partial gradient maps on the relevant range. $F^m_n$ is strictly increasing and concave in $\tilde l$, with an invertible derivative.
+\end{assumption}
+Required interface methods: \texttt{value()}, \texttt{grad(arg)}, \texttt{inv\_grad(arg, target\_price)}.
+
+\subsection{Network cost and friction primitives}
+\begin{itemize}[leftmargin=*]
+    \item $T_{nn'}(\hat Q_{nn'}, I_{nn'})$: road congestion travel time. Assumed $\partial_1 T_{nn'} \ge 0$ (weakly increasing in flow), $\partial_2 T_{nn'} \le 0$ (weakly decreasing in capacity), jointly convex in $\hat Q_{nn'}$.
+    \item $\tau^s_{nn'}(\hat Q_{nn'}, I_{nn'}) \in (0,1]$: multiplicative iceberg transmission factor. Assumed $\partial_1 \tau^s_{nn'} \le 0$, $\partial_2 \tau^s_{nn'} \ge 0$.
+    \item $T^P_k(y^P_k, S_k)$ with $S_k := \sum_{p\in\mathcal{P}} Y_k^p$: parking search delay, a function of node-level demand $y^P_k$ and \emph{aggregate} supply $S_k$. Assumed $\partial_1 T^P_k \ge 0$, $\partial_2 T^P_k \le 0$. Note that $T^P_k$ depends only on the aggregate $S_k$, not on the individual $Y_k^p$ separately — parking types are congestion-symmetric in this model. Consequently $\partial T^P_k / \partial Y_k^p = \partial_2 T^P_k$ for every $p \in \mathcal{P}$ (chain rule through $\partial S_k/\partial Y_k^p = 1$).
+    \item $T^{m,board}_{nn'}(Q^{m,B}_{nn'}, V^m_{nn'})$: transit boarding delay. Assumed $\partial_1 T^{m,board}_{nn'} \ge 0$, $\partial_2 T^{m,board}_{nn'} \le 0$.
+    \item $t^{m,W}_{nn'}(V^m_{nn'})$: passenger waiting/in-vehicle time, single-argument, weakly decreasing in fleet frequency.
+\end{itemize}
+Required interface methods: \texttt{value()}, \texttt{grad1()}, \texttt{grad2()} (single \texttt{grad()} for $t^{m,W}_{nn'}$). No inversion is required for this group; these primitives are only ever evaluated and differentiated, never inverted.
+
+\begin{remark}
+No closed functional form is assumed anywhere above beyond the stated monotonicity/concavity directions. Implementing each primitive as an abstract base class with the listed methods is what makes this document's algorithm fully agnostic to the specific functional forms chosen at calibration time.
+\end{remark}
+
+\section{Algorithmic Description and Mathematical Formalism}
+
+The global architecture relies on a bi-level decomposition framework (inner and outer loops). This approach overcomes three methodological bottlenecks:
+\begin{itemize}
+    \item \textbf{The non-convexity of the admissible domain induced by transport network terms}, coming from three distinct sources: (i) multiplicative iceberg transport loss factors $\tau^s_{nn'}(\hat Q_{nn'}, I_{nn'})$, which depend non-affinely on aggregated flows and infrastructure capacity; (ii) the parking-search term $y_k^{P}\cdot T^P_k(y_k^P, S_k)$ in the time constraint, which is a product of a flow variable and a function of an aggregated quantity — structurally the same $q_i\cdot T(\sum_j q_j)$ pattern that cannot be jointly convex for any non-constant $T$; (iii) the transit fleet/boarding term $V^m_{nn'}\cdot T^{m,board}_{nn'}(Q^{m,B}_{nn'}, V^m_{nn'})$ in the fleet availability constraint, where the vehicle flow variable multiplies a delay function of itself — the same obstruction, now self-referential.
+    \item \textbf{The endogenous co-dependence} between generalized transportation costs (congestion functions) and flow assignment choices.
+    \item \textbf{Lumpy structural investment decisions} (infrastructure capacity $I_{nn'}$ and floor-space stocks $\bar l_i^b$), which are financed from a single shared capital budget $K$ and evolve on a slower timescale than the flow/price equilibrium.
+\end{itemize}
+Floor-space stocks $\bar l_i^b$ are \emph{not} a source of non-convexity: every constraint in which $\bar l_i^b$ appears (the floor-space--land constraint, the residential/non-residential/parking floor-space bounds, and the capital budget) is linear in $\bar l_i^b$. It is moved to the outer loop purely because it is, like $I_{nn'}$, a lumpy capital decision sharing budget $K$ and best updated on the slower outer timescale — not because gradient ascent on it is unreliable inside the inner loop.
+
+\subsection{Inner Loop Structure}
+
+The inner loop resolves the local optimization sub-problem, \emph{conditional on the outer-loop structural and coupling state being held fixed}, through a modified Uzawa--Arrow--Hurwicz scheme, alternating between the evaluation of closed-form analytical equations, exact network routing sub-problems, and coupled primal-dual gradient steps.
+
+\begin{table}[h!]
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{lp{11cm}}
+        \toprule
+        \textbf{Sub-set} & \textbf{Variables} \\
+        \midrule
+        Iterative Primal ($\mathcal{X}$) & $h^{ijsb}$, $\tilde l_i^b$, $Y_j^s$, $Q_{ij}^s$, $\tilde Q_{ij}^s$, $q^{0, js}$, $h^{0,js}$, $Q_{i0}^s$, $Q_{0i}^s$, $\tilde l_i^{infra}$ \\ \addlinespace
+        Iterative Dual ($\Lambda$) & $\lambda^0$, $w^0$, $\rho_j^s$, $\tilde r_i$, $\bar r_i^b$, $r_i^{b,r}$, $r_j^{b,nr}$, $r_j^p$, $r_i^{infra}$, $\pi_j^s$, $\pi_j^p$, $\pi_{nn'}^m$, $w_j^s$, $w_m$, $p_i^{s',T}$, $p_i^{s',N}$, $\theta_0$, $\lambda^{stat}_{m,n}$ \\ \addlinespace
+        Analytical Primal ($\mathcal{Y}$) & $\bar q^s$, $q^{ijs}$, $q^{ijsb}$, $q^{ijsb}_{s'k}$, $c^{ijsb}_{s'}$, $d^{ijsb}_{s'k}$, $l^{ijsb}$, $f_h^{ijsb}$, $f^{ijsb}_{s'k}$, $H_j^s$, $L_j^{sb}$, $Q_j^{ss'}$, $H_j^p$, $H_{nn'}^m$, $\tilde l^m_n$ \\ \addlinespace
+        Analytical Dual ($\mathcal{K}$) & $\xi^{ijsb}_k$, $\chi_{m, nn', ijsb}$, $\mu^{ijsb}_n$, $\mu^{ijsb}_{s'k,n}$, $\nu^s_{ij,n}$, $\mu^{0js}_n$\\
+        \bottomrule
+    \end{tabular}
+    \caption{Classification and partitioning of inner loop variables. $\bar l_i^b$ (all $b \in \mathcal{B}$, including parking floor space), $Y_j^p$, $V_{nn'}^m$, $\lambda^{fleet}_m$, and $\lambda^{v\_cons}_{m,n}$ have been removed: they are now outer-loop structural variables, listed in Table~\ref{tab:outer_partition}. Note that $\lambda^{stat}_{m,n}$ remains inner: its constraint still has a genuine inner degree of freedom ($\tilde l^m_n$, station land) reacting against it, unlike $\lambda^{fleet}_m$ and $\lambda^{v\_cons}_{m,n}$ (see discussion below).}
+    \label{tab:partition_variables}
+\end{table}
+
+The explicit update scheme for the inner loop at each iteration $t$, conditional on the outer-loop structural state $\mathcal{O}^{(K)} = \{I_{nn'}^{(K)}, \bar l_i^{b,(K)}, Y_k^{p,(K)}, V_{nn'}^{m,(K)}, \lambda^{fleet,(K)}_m, \lambda^{v\_cons,(K)}_{m,n}\}$ and coupling state $\mathcal{Z}^{(K)}$, is formulated as follows:
+\begin{align}
+    \kappa^{t+1} &= \kappa^*(x^t, \lambda^t; \mathcal{O}^{(K)}, \mathcal{Z}^{(K)}) \\
+    y^{t+1} &= y^*(x^t, \lambda^t; \mathcal{O}^{(K)}, \mathcal{Z}^{(K)}) \\
+    x^{t+1} &= \Proj{x^t + \alpha_x \nabla_x \mathcal{L}_K(x^t, y^{t+1}, \lambda^t, \kappa^{t+1})} \\
+    \lambda^{t+1} &= \Proj{\lambda^t - \alpha_{\lambda} \nabla_{\lambda} \mathcal{L}_K(x^t, y^{t+1}, \lambda^t, \kappa^{t+1})}
+\end{align}
+The positive sign for the primal step $x^{t+1}$ stems from the fact that the social planner's program is a **maximization** problem of net social welfare. The negative sign for the dual step $\lambda^{t+1}$ corresponds to a **descent** algorithm aiming to minimize shadow prices and eliminate violations of physical market-clearing constraints.
+
+\subsection{Outer Loop Structure}
+
+The outer loop handles two distinct families of variables, updated by two distinct mechanisms.
+
+\textbf{(i) Macroscopic coupling and pricing vector} $\mathcal{Z} = \{\hat Q_{nn'}, y_k^P, Q_{nn'}^{m, B}, \gamma_{nn'}, \gamma_k^{Park}, \gamma^{board}_{m, nn'}\}$. These macroscopic demographic and physical flow variables, alongside network-related dual variables, are updated using a Method of Successive Averages (MSA) to stabilize the network fixed point. The dampening step size at outer cycle $K$ is strictly defined as $\theta_K = 1/K$.
+
+\textbf{(ii) Outer structural primal} $\mathcal{O} = \{I_{nn'}, \bar l_i^b, Y_k^p, V_{nn'}^m\}$, plus the capital budget shadow price $\beta$. These are updated by gradient-based steps rather than MSA, since they are not flow-conservation fixed points but optimality conditions on lumpy/non-convex decisions:
+\begin{itemize}[leftmargin=*]
+    \item $I_{nn'}$: projected gradient ascent regulated by a Simulated Annealing protocol coupled with a Multi-Start strategy, since infrastructure investment induces severe global, combinatorial-in-topology non-convexities.
+    \item $\bar l_i^b$ (all $b\in\mathcal{B}$): plain projected gradient ascent. As established above, floor space is not itself a source of non-convexity, so no annealing is required; it is updated at the outer-loop frequency purely because it is a lumpy capital decision sharing budget $K$ with $I_{nn'}$.
+    \item $Y_k^p$: plain projected gradient ascent. $Y_k^p$ enters the time constraint multiplicatively through $T^P_k(y_k^P, S_k)$, which is a genuine non-convexity source; its previous closed-form inversion inside the inner loop implicitly assumed monotonic invertibility of the operating-return map, which is not guaranteed once that non-convexity is taken seriously. A single gradient step at the outer-loop frequency is used instead (no annealing, since unlike $I_{nn'}$ this is not a combinatorial network-topology decision).
+    \item $V_{nn'}^m$: plain projected gradient ascent. $V^m_{nn'}$ enters the fleet availability constraint and the time constraint through $T^{m,board}_{nn'}(Q^{m,B}_{nn'}, V^m_{nn'})$ — a delay function of itself, multiplied by flow and fleet variables — the same $q\cdot T(\cdot)$ obstruction as $Y_k^p$, now self-referential. No annealing: not a combinatorial network-topology decision.
+    \item $\beta$: projected gradient descent on the capital budget shadow price.
+\end{itemize}
+
+\begin{remark}[Forced promotion of $\lambda^{fleet}_m$ and $\lambda^{v\_cons}_{m,n}$]
+Moving $V^m_{nn'}$ to the outer loop has a knock-on consequence that does not arise for $\bar l_i^b$ or $Y_k^p$. The vehicle conservation constraint ($\sum_{n'}V^m_{nn'} = \sum_{n''}V^m_{n''n}$) and the fleet availability constraint ($\bar V^m \ge \sum_{nn'}V^m_{nn'}(T_{nn'}+T^{m,board}_{nn'})$) are written \emph{purely} in terms of $V^m_{nn'}$ and outer-cycle background cost functions — neither constraint has any other free variable on its other side. Once $V^m_{nn'}$ is fixed for the duration of an inner loop, the residuals of these two constraints are constant throughout that inner loop, so their multipliers $\lambda^{v\_cons}_{m,n}$ and $\lambda^{fleet}_m$ would have nothing to react to if left as inner-loop duals — a plain gradient descent on a constant residual never stabilizes. This is unlike $\bar r_i^b$, $r_i^{b,r}$, $r_j^{b,nr}$, $r_j^p$ (which retain a genuine inner counterpart: $\tilde l_i^{b}$ or consumer/firm floor-space demand, both still inner) and unlike $\lambda^{stat}_{m,n}$ (whose constraint still has $\tilde l^m_n$, station land, as a free inner variable on the other side). Consequently $\lambda^{fleet}_m$ and $\lambda^{v\_cons}_{m,n}$ must move to the outer loop alongside $V^m_{nn'}$, updated once per outer cycle (Section~\ref{sec:global_algo}, step 4(d)) rather than per inner iteration.
+\end{remark}
+
+\begin{table}[h!]
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Variable} & \textbf{Update mechanism} & \textbf{Reason} \\
+        \midrule
+        $I_{nn'}$ & Gradient ascent + Simulated Annealing + Multi-Start & Combinatorial network non-convexity \\
+        $\bar l_i^b$, $b\in\mathcal{B}$ & Plain projected gradient ascent & Lumpy capital decision, shares budget $K$; not a non-convexity source \\
+        $Y_k^p$ & Plain projected gradient ascent & Genuine non-convexity source (time constraint), but not combinatorial \\
+        $V_{nn'}^m$ & Plain projected gradient ascent & Self-referential non-convexity source (fleet/boarding delay), not combinatorial \\
+        $\lambda^{fleet}_m$, $\lambda^{v\_cons}_{m,n}$ & Plain projected gradient descent & Follow $V^m_{nn'}$ outer: no remaining inner degree of freedom once $V^m_{nn'}$ is fixed \\
+        $\beta$ & Plain projected gradient descent & Scalar shadow price on $K$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Outer-loop structural primal $\mathcal{O}\cup\{\beta\}$, its associated promoted duals, and its update mechanism.}
+    \label{tab:outer_partition}
+\end{table}
+
+Throughout the inner loop nested inside a given outer cycle $K$, the outer structural variables $\mathcal{O}^{(K)}$ are treated as \emph{fixed constants}: any inner-loop FONC or gradient step that previously referenced $\bar l_i^{b,t+1}$ or $Y_k^{p,t+1}$ now references the outer-cycle constants $\bar l_i^{b,(K)}$ and $Y_k^{p,(K)}$ instead. This substitution is applied explicitly throughout Section~\ref{sec:global_algo}.
+
+---
+
+\section{Structural Analysis of the Transportation Sub-Problem}
+
+We isolate the transportation sub-problem determining routing flows $q^{ijsb}_{s'k, nn'}$, $q^{ijsb}_{nn'}$, $y_k^{P,ijsb}$, $q^{m,B,ijsb}_{nn'}$, $q^s_{0j, nn'}$ and the analytical dual variables in $\mathcal{K}$.
+
+Four distinct flow classes simultaneously compete for physical transport network capacity:
+\begin{itemize}
+    \item $q^{ijsb}_{nn'}$ : commuter flows between home $i$ and workplace $j$ (\textit{commuting});
+    \item $q^{ijsb}_{s'k, nn'}$ : secondary trip flows for executing non-work activities in node $k$;
+    \item $Q_{ij, nn'}^s$ : commercial freight flows for tradable commodities;
+    \item $q_{0j, nn'}^s$ : peripheral commuter flows traveling from external boundary nodes to internal workplaces. To restrict the set of boundary nodes, we define a single entry point $\mathcal{N}^G = \{n_g\}$.
+\end{itemize}
+
+\subsection{Passenger Flows and Minimum Cost Flow Problem}
+
+Passenger assignment across network links obeys Wardropian user equilibrium conditions. For each layer, the optimal route choice is equivalent to a shortest path search under a generalized cost field. The analytical dual variables $\mathcal{K}$ represent nodal potentials derived directly from first-order optimality conditions.
+
+For urban commuters, the explicit path optimality condition states that for any active link $(nn')$:
+\begin{align}
+    \mu^{ijsb}_{n'} - \mu^{ijsb}_{n} \le - \sum_{m} \chi_{m,nn',ijsb} \cdot \mathbb{I}_{(nn') \in \mathcal{L}^m} +\sum_{m, n''} \chi_{m,n'n'',ijsb} \cdot \mathbb{I}_{(n'n'') \in \mathcal{L}^m} \le \gamma_{nn'}^{(K)} + \rho^s_j \cdot \omega_w \cdot T_{nn'}(\hat Q_{nn'}^{(K)}, I_{nn'}^{(K)}) \nonumber \\
+    + \rho^s_j \cdot \omega_w \sum_m T^{m,board}_{nn'}(Q_{nn'}^{m,B,(K)}, V_{nn'}^{m,(K)}) \cdot \mathbb{I}_{(nn') \in \mathcal{L}^m} \nonumber \\
+    + \mathbb{I}_{nn' \in \mathcal{L}^{\mathrm{car}}} \cdot \left [(\xi_{n'}^{ijsb,t} - \xi_{n}^{ijsb,t})\cdot h^{ijsb,t} + \xi_n^{ijsb,t} \cdot f^{ijsb,t}_h \cdot \mathbb{I}_{n=i} \right] \perp q^{ijsb}_{nn'} \ge 0 \label{eq:foc_commuter}
+\end{align}
+Where the transit boarding frictional variable $\chi_{m,nn',ijsb}$ is evaluated analytically as:
+\begin{equation}
+    \chi_{m,nn',ijsb} = \gamma^{\text{board},(K)}_{m,nn'} + \rho^s_j \cdot \omega_w \cdot t^{m,W}_{nn'}(V^{m,(K)}_{nn'})
+\end{equation}
+
+For secondary activity displacement flows, the explicit path condition states:
+\begin{equation}
+    \mu^{ijsb}_{s'k,n'} - \mu^{ijsb}_{s'k,n} \le \gamma_{nn'}^{(K)} + \omega_w \cdot \rho^s_j \cdot T_{nn'}(\hat Q_{nn'}^{(K)}, I_{nn'}^{(K)}) + \left( \xi^{ijsb,t}_{n'} - \xi^{ijsb,t}_{n} \right) \cdot f^{ijsb,t}_{s'k} \cdot \mathbb{I}_{nn' \in \mathcal{L}^{\mathrm{car}}} \perp q^{ijsb}_{s'k,nn'} \ge 0
+\end{equation}
+
+For external peripheral commuters, the explicit path condition states:
+\begin{equation}
+    \mu^{0js}_{n'} - \mu^{0js}_n \le \gamma_{nn'}^{(K)} + h^{0,js,t}\cdot (\gamma^{park,(K)}_{n'} - \gamma^{park,(K)}_n) \cdot \mathbb{I}_{nn' \in \mathcal{L}^{\mathrm{car}}} \perp q^s_{0j,nn'} \ge 0
+\end{equation}
+
+The exact evaluation of these spatial potentials ($\mu^{ijsb}_n, \mu^{ijsb}_{s'k,n}, \mu^{0js}_n$) is carried out using a single-destination Dijkstra algorithm executed with link costs defined by the right-hand side of the inequalities shown above.
+
+\subsection{Extension to Freight Transport under the Bellman-Ford Framework}
+
+To model commodity shipments, incorporating the multiplicative iceberg shrinkage factor requires a dynamic programming Bellman-Ford equation framework.
+
+Let us recall the standard sequential Bellman decision problem setup:
+\begin{itemize}
+    \item A set of states $X$ is defined.
+    \item For each pair of states $(x,y) \in X^2$, a transition gain $G_{x,y} \in \mathbb{R} \cup \{-\infty \}$ is given.
+    \item An initial state $x_0 \in X$ is fixed.
+    \item For any terminal state $y \in X$, a terminal payoff $b_y \in \mathbb{R} \cup \{ - \infty\}$ is assigned.
+\end{itemize}
+The optimization problem maximizes the cumulative total gain over an horizon of $N$ transitions:
+\begin{equation}
+    \max_{N \ge 0, \, x_1,\dots,x_N} \left\{ G_{x_0x_1} + \dots + G_{x_{N-1}x_N} + b_{x_N} \right\}
+\end{equation}
+The classic shortest-path problem is a special case where: $\mathcal{N} = X$, $G_{ij} = - c_{ij}$ if $(ij) \in \mathcal{E}$ (and $-\infty$ otherwise), the initial state $x_0 = o$ (origin), and terminal destination rewards are $b_d = 0$ and $b_j = -\infty$ for all $j \ne d$.
+
+Letting $N$ denote the maximum length of a path, the value function is recursively defined as:
+\begin{equation}
+    \begin{aligned}
+        v_x^0 &= b_x \\
+        v_x^n &= \sup_{y \in X} \left( G_{xy} + v_y^{n-1} \right)
+    \end{aligned}
+\end{equation}
+The associated Bellman operator maps a vector $\omega$ via $(\mathcal{B}(\omega))_x = \sup_{y \in X} (G_{xy} + \omega_y)$, yielding the vector sequence $v^n = \mathcal{B}(v^{n-1})$. At the optimum, value function entries match the negative of the network nodal price potentials.
+
+To integrate the multiplicative iceberg constraint, we expand this operator. For the commercial freight layer, the Bellman-Iceberg operator is formulated as:
+\begin{equation}
+    (\mathcal{B}(\omega))_n = \max_{n' \in X} \left( \tau^s_{nn'}(\hat Q_{nn'}^{(K)}, I_{nn'}^{(K)}) \cdot \omega_{n'} + G_{nn'} \right)
+\end{equation}
+This formulation ensures compatibility with spatial equilibrium requirements by setting the transition step gain to $G_{nn'} = -\gamma_{nn'}^{(K)} \frac{\phi^s}{\omega_w}$.
+
+\textbf{Resolution of the coupling between network routing and received quantities $\tilde{Q}^s_{ij}$:} The variable $\tilde{Q}^s_{ij}$ tracks net quantities received at destination market $j$. To strictly link graph operations to tradable goods prices, the backward Bellman-Ford algorithm's terminal boundary condition at destination $j$ must be anchored on the current local market price, while all non-target nodes are penalized:
+\begin{equation}
+    \nu_{ij,n}^{s, 0} =
+    \begin{cases}
+        p_j^{s,T,t} & \text{if } n = j \\
+        -\infty & \text{if } n \neq j
+    \end{cases}
+\end{equation}
+The recursion runs backward from $n=1$ to $n\_iter$ updates:
+\begin{equation}
+    \nu_{ij,n}^{s, n\_iter} = \max_{n' \in \mathcal{N}(n)} \left\{ \tau^s_{nn'}(\hat Q_{nn'}^{(K)}, I_{nn'}^{(K)}) \cdot \nu_{ij,n'}^{s, n\_iter-1} - \gamma_{nn'}^{(K)} \frac{\phi^s}{\omega_w} \right\}
+\end{equation}
+Upon convergence, the computed origin node potential $\nu_{ij,i}^s$ satisfies the spatial non-arbitrage condition and acts as the target value for updating the primal shipping flow variables.
+
+Executing Dijkstra's method for passenger layers and the modified Bellman-Ford algorithm for freight guarantees that path optimality and trade conditions are fulfilled exactly for any fixed background variables.
+
+\section{Computing the Inclusive-Value Cascade $\IV$}
+\label{sec:inclusive_value}
+
+This section makes fully explicit how every term of the nested-logit inclusive-value cascade is computed within a single inner iteration $t \to t+1$, including the exact time-index of every input. The cascade is renamed $\IV$ (script V) throughout this document to avoid confusion with the transit vehicle flow $V^m_{nn'}$, which is an unrelated decision variable.
+
+\begin{remark}[Evaluation order]
+Values are computed \emph{bottom-up} (innermost nest — activity destination choice — first, outermost nest — sector choice — last), since each level's value function is defined in terms of the level below it. Quantities (population shares) are then computed \emph{top-down} (outermost nest first), since each level's logit share is defined relative to the population mass allocated at the level above it. This is the standard nested-logit evaluation order, and it is fully spelled out step by step below.
+\end{remark}
+
+\textbf{Step 0 — inputs available at the start of inner iteration $t+1$.}
+\begin{itemize}[leftmargin=*]
+    \item Prices and shadow values from iteration $t$: $\rho_j^{s,t}$, $p_k^{s',T,t}$, $p_k^{s',N,t}$, $w_j^{s,t}$, $\xi_k^{ijsb,t}$.
+    \item Consumption/time allocations from iteration $t$: $c^{ijsb,t}_{s'}$, $l^{ijsb,t}$, $f_h^{ijsb,t}$, $d^{ijsb,t}_{s'k}$, $f^{ijsb,t}_{s'k}$, $h^{ijsb,t}$.
+    \item Outer-cycle constants: $\mathcal{O}^{(K)}$, $\mathcal{Z}^{(K)}$ (not directly needed here except through the routing potentials below).
+\end{itemize}
+
+\textbf{Step 1 — network potentials (computed first, via Dijkstra, Section 3.1).} Using $t$-level prices and $K$-level coupling, compute $\mu^{ijsb,t+1}_n$, $\mu^{ijsb,t+1}_{s'k,n}$ for all $n \in \mathcal{N}$, $i,j,k\in\mathcal{I}$, $s\in\mathcal{S}$, $b\in\mathcal{B}^r$, $s'\in\mathcal{S}^P$. These are the freshest available potentials and are used immediately below.
+
+\textbf{Step 2 — activity-destination value (innermost nest), $\forall s'\in\mathcal{S}^P$:}
+\begin{align}
+    \IV^{ijsb, t+1}_{s'k} &= \left [ u_{s'}(d^{ijsb,t}_{s'k}, f^{ijsb,t}_{s'k}) - p^{s',T,t}_k \cdot d^{ijsb,t}_{s'k} - \rho^{s,t}_j \cdot f^{ijsb,t}_{s'k} \right] \mathbb{1}_{s' \in \mathcal{S}^T} \nonumber \\
+    &\qquad + \left [ u_{s'}(f^{ijsb,t}_{s'k}) - p^{s',N,t}_k \cdot f^{ijsb,t}_{s'k} - \rho_j^{s,t} \cdot  f^{ijsb,t}_{s'k} \right] \mathbb{1}_{s' \in \mathcal{S}^N} - \left[\mu^{ijsb, t+1}_{s'k,k} - \mu^{ijsb, t+1}_{s'k,i}\right]
+    \label{eq:iv_activity}
+\end{align}
+(uses $t$-level allocations/prices, $t+1$-level potentials from Step 1).
+
+\textbf{Step 3 — activity-sector inclusive value, $\forall s'\in\mathcal{S}^P$:}
+\begin{equation}
+    A^{ijsb, t+1}_{s'} = \sigma_{s'} \cdot \log \sum_{k \in \mathcal{I}} \exp\left(\frac{\IV^{ijsb,t+1}_{s'k}}{\sigma_{s'}}\right)
+    \label{eq:iv_A}
+\end{equation}
+(no $-\sigma_{s'}\log\omega_{s'}$ term: this constant, present in an earlier version of this document, does not arise from the entropy-regularized sub-problem and has been removed.)
+
+\textbf{Step 4 — building/residence-level value (uses Steps 1 and 3):}
+\begin{align}
+    \IV^{ijsb,t+1} &= U(\mathbf{c}^{ijsb,t}, l^{ijsb,t}, f^{ijsb,t}_h) - r^{b,r,t}_i \cdot l^{ijsb,t} - \sum_{s' \in \mathcal{S}^T} p^{s',T,t}_i c^{ijsb,t}_{s'} - \left[\mu^{ijsb, t+1}_{j} - \mu^{ijsb, t+1}_{i}\right] \nonumber \\
+    &\qquad - \rho^{s,t}_j \cdot \left( h^{ijsb,t} + f^{ijsb,t}_h - \overline{H} \right) + w_j^{s,t} \cdot h^{ijsb,t} + \sum_{s' \in \mathcal{S}^P} \omega_{s'} A^{ijsb, t+1}_{s'}
+    \label{eq:iv_building}
+\end{align}
+
+\textbf{Step 5 — residence-workplace inclusive value (uses Step 4):}
+\begin{equation}
+    \IV^{ijs, t+1} = \sigma_{ijs} \cdot \log \sum_{b \in \mathcal{B}^r} \exp\left(\frac{\IV^{ijsb,t+1}}{\sigma_{ijs}}\right)
+    \label{eq:iv_location}
+\end{equation}
+
+\textbf{Step 6 — sector inclusive value (outermost nest, uses Step 5):}
+\begin{equation}
+    \IV^{s, t+1} = \sigma_s \cdot \log \sum_{i,j \in \mathcal{I}} \exp\left(\frac{\IV^{ijs,t+1}}{\sigma_s}\right)
+    \label{eq:iv_sector}
+\end{equation}
+
+\textbf{Step 7 — quantities (top-down, uses Steps 6 down to 2 in reverse order):}
+\begin{align}
+    \overline{q}^{s, t+1} &= \overline{q} \cdot \frac{\exp\left(\IV^{s,t+1} / \tilde{\sigma}\right)}{\sum_{\tilde{s} \in \mathcal{S}} \exp\left(\IV^{\tilde{s},t+1} / \tilde{\sigma}\right)} \quad \forall s \in \mathcal{S} \\
+    q^{ijs, t+1} &= \overline{q}^{s,t+1} \cdot \frac{\exp\left(\IV^{ijs,t+1} / \sigma_s\right)}{\sum_{i',j' \in \mathcal{I}} \exp\left(\IV^{i'j's,t+1} / \sigma_s\right)} \\
+    q^{ijsb, t+1} &= q^{ijs,t+1} \cdot \frac{\exp\left(\IV^{ijsb,t+1} / \sigma_{ijs}\right)}{\sum_{b' \in \mathcal{B}^r} \exp\left(\IV^{ijsb',t+1} / \sigma_{ijs}\right)} \\
+    q^{ijsb, t+1}_{s'k} &= \omega_{s'} \cdot q^{ijsb,t+1} \cdot \frac{\exp\left(\IV^{ijsb,t+1}_{s'k} / \sigma_{s'}\right)}{\sum_{k' \in \mathcal{I}} \exp\left(\IV^{ijsb,t+1}_{s'k'} / \sigma_{s'}\right)}
+\end{align}
+
+\begin{remark}
+Steps 2--6 (values) must be fully completed for all $(i,j,s,b,s',k)$ before Step 7 (quantities) begins: the top-down quantity recursion at level $\ell$ requires the bottom-up value at level $\ell$, which in turn requires every value at levels below it. No quantity is computed before every value above it in the cascade is available.
+\end{remark}
+
+\section{Global Resolution Algorithm}
+\label{sec:global_algo}
+
+\subsection{Algorithmic Steps Sequence}
+
+The execution sequence follows the systematic loop order described below.
+\begin{enumerate}
+    \item \textbf{Initialization}: Fix initial outer loop coupling states $\mathcal{Z}^{(0)}$, initial outer structural states $\mathcal{O}^{(0)} = \{I_{nn'}^{(0)}, \bar l_i^{b,(0)}, Y_k^{p,(0)}\}$, $\beta^{(0)}$, and initialize the primal-dual iterative vectors $(x^{(0)}, \lambda^{(0)})$.
+    \item \textbf{Outer Loop (Cycle $K$)}:
+    \begin{enumerate}
+        \item Update background network cost functions $T_{nn'}(\hat Q_{nn'}^{(K)}, I_{nn'}^{(K)})$, $T^P_k(y_k^{P,(K)}, S_k^{(K)})$ with $S_k^{(K)} = \sum_{p}Y_k^{p,(K)}$, $\tau^s_{nn'}(\hat Q_{nn'}^{(K)}, I_{nn'}^{(K)})$, and $T_{nn'}^{m,board}(Q_{nn'}^{m,B,(K)}, V_{nn'}^{m,(K)})$, alongside their analytical partial derivatives ($\partial_1$, $\partial_2$ as defined in Section~\ref{sec:primitives}).
+        \item \textbf{Inner Loop (Iteration $t$)}, with $\bar l_i^{b,(K)}$ and $Y_k^{p,(K)}$ held fixed throughout:
+        \begin{enumerate}
+            \item \textit{Multimodal Routing and Potentials}: Execute single-destination shortest-path evaluations (Dijkstra) to resolve current nodal potentials $\mu_n^{ijsb, t+1}$, $\mu^{ijsb, t+1}_{s'k,n}$, $\mu^{0js, t+1}_n$, and transit boarding variables $\chi_{m,nn',ijsb}^{t+1}$ (Section~3.1).
+            \item \textit{Freight Routing}: Run the Bellman-Ford-Iceberg dynamic programming script to calculate the trade potential matrix $\nu^{s, t+1}_{ij,n}$, anchoring the backward search on terminal boundary values $\nu_{ij,j}^{s,t+1} = p_j^{s,T,t}$ (Section 3.2).
+
+            \item \textit{Analytical Primal Forms}: Evaluate the full inclusive-value cascade and nested-logit population shares using the explicit seven-step procedure of Section~\ref{sec:inclusive_value}.
+
+            Invert utility function gradients locally to compute individual consumer demand endpoints:
+            \begin{align}
+                c^{ijsb, t+1}_{s'} &= \left[ \nabla_c U \right]^{-1} \left( p^{s',T,t}_i \right) \quad \forall s' \in \mathcal{S}^T \\
+                d^{ijsb, t+1}_{s'k} &= \left[ \nabla_d u_{s'} \right]^{-1} \left( p^{s',T,t}_k \right) \quad \forall s' \in \mathcal{S}^T \\
+                l^{ijsb, t+1} &= \left[ \nabla_l U \right]^{-1} \left( r^{b,r,t}_i \right) \\
+                f^{ijsb, t+1}_h &= \left[ \nabla_{f_h} U \right]^{-1} \left( \rho^{s,t}_j + \frac{\xi^{ijsb,t}_i}{q^{ijsb,t+1}} \left[ \sum_{n'} q^{ijsb,t}_{in'} \right] \right) \\
+                f^{ijsb, t+1}_{s'k} &= \left[ \nabla_{f_{s'k}} u_{s'} \right]^{-1} \left( \rho^{s,t}_j + p^{s',N,t}_k \mathbb{I}_{s' \in \mathcal{S}^N} + \frac{\xi^{ijsb,t}_k}{q^{ijsb,t+1}_{s'k}} \left[ \sum_n q^{ijsb,t}_{s'k,nk} - \sum_{n'} q^{ijsb,t}_{s'k,kn'} \right] \right)
+            \end{align}
+            Evaluate micro parking space costs tracking variables:
+            \begin{equation}
+                \xi^{ijsb, t+1}_k = \gamma^{\text{park}, (K)}_k + \rho^{s,t}_j \cdot \omega_w \cdot T^P_k(y_k^{P,(K)}, S_k^{(K)})
+            \end{equation}
+            Determine firm input demands by inverting local marginal productivity conditions for a given production target $Y_j^{s,t}$:
+            \begin{align}
+                H_j^{s, t+1} &= \left[ \nabla_H F_j^s \right]^{-1} \left( \frac{w^{s,t}_j}{\pi^{s,t}_j} \right), \quad L_j^{sb, t+1} = \left[ \nabla_L F_j^s \right]^{-1} \left( \frac{r^{b,nr,t}_j}{\pi^{s,t}_j} \right) \\
+                Q_j^{ss', t+1} &= \left[ \nabla_Q F_j^s \right]^{-1} \left( \frac{p^{s',T,t}_j}{\pi^{s,t}_j} \right)
+            \end{align}
+            Determine operating input demands for parking lots and transit systems:
+            \begin{equation}
+                H_j^{p, t+1} = \left[ \nabla_H F_j^p \right]^{-1} \left( \frac{w^{p,t}_j}{\pi^{p,t}_j} \right), \quad H_{nn'}^{m, t+1} = \left[ \nabla_H F_{nn'}^m \right]^{-1} \left( \frac{w_m^t}{\pi^{m,t}_{nn'}} \right), \quad \tilde l^m_{n, t+1} = \left[ \nabla_l F_n^m \right]^{-1} \left( \frac{\tilde r_n^t}{\lambda^{\text{stat},t}_{m,n}} \right)
+            \end{equation}
+            \begin{remark}
+            The parking-hours supply $Y_k^p$ no longer appears in this block: it is no longer inverted from a closed-form operating-return condition inside the inner loop. Its value is held fixed at $Y_k^{p,(K)}$ throughout this inner loop, and is instead updated once per outer cycle in step~4 below.
+            \end{remark}
+
+            \item \textit{Gradient Ascent-Descent Step}: Update iterative primal elements $x^{t+1}$ via Lagrangian gradient ascent steps. Note that $\bar l_i^{b}$ and $V_{nn'}^m$ no longer appear in this block (both are now updated once per outer cycle, see step 4 below); wherever the dual updates below previously referenced $\bar l_i^{b,t+1}$, $Y_k^{p,t+1}$, or $V_{nn'}^{m,t+1}$, they now reference the outer-cycle constants $\bar l_i^{b,(K)}$, $Y_k^{p,(K)}$, $V_{nn'}^{m,(K)}$.
+            \begin{align}
+                h^{ijsb, t+1} &= \Proj{ h^{ijsb,t} + \alpha_x \left( w^{s,t}_j - \rho^{s,t}_j - \sum_{k \in \mathcal{I}} \frac{\xi_k^{ijsb,t}}{q^{ijsb,t+1}} \left[ \sum_{nk \in \mathcal{L}^{\mathrm{car}}} q^{ijsb,t}_{nk} - \sum_{kn \in \mathcal{L}^{\mathrm{car}}} q^{ijsb,t}_{kn} \right] \right) } \\
+                \tilde{l}_i^{b, t+1} &= \Proj{ \tilde{l}_i^{b,t} + \alpha_x \left( \bar{r}_i^{b,t} - \tilde{r}_i^t \right) } \\
+                Y_j^{s, t+1} &= \Proj{ Y_j^{s,t} + \alpha_x \left( \pi_j^{s,t} - \mathbb{I}_{s \in \mathcal{S}^T} p_j^{s,T,t} - \mathbb{I}_{s \in \mathcal{S}^N} p_j^{s,N,t} \right) } \\
+                Q_{ij}^{s, t+1} &= \Proj{ Q_{ij}^{s,t} + \alpha_x \left( \nu^{s,t}_{ij,i} - p^{s,T,t}_i \right) } \\
+                \tilde{Q}_{ij}^{s, t+1} &= \Proj{ \tilde{Q}_{ij}^{s,t} + \alpha_x \left( \nu^{s,t}_{ij,j} - p^{s,T,t}_j \right) } \\
+                q^{0, js, t+1} &= \Proj{ q^{0,js,t} + \alpha_x \left( w^{s,t}_j \cdot h^{0,js,t} - \lambda^{0,t} - (\mu^{0js,t}_{j} - \mu^{0js,t}_{n_g}) \right) } \\
+                h^{0,js, t+1} &= \Proj{ h^{0,js,t} + \alpha_x \left( w_j^{s,t} q^{0,js,t} - w^{0,t} - \sum_{k} \gamma_k^{park,(K)} \left[ \sum_{nk} q^{s,t}_{0j,nk} - \sum_{kn} q^{s,t}_{0j,kn'} \right] \right) } \\
+                Q_{i0}^{s, t+1} &= \Proj{ Q_{i0}^{s,t} + \alpha_x \left( p^{s,T,t}_i - \theta_0^t \tau^E_s \right) } \\
+                Q_{0i}^{s, t+1} &= \Proj{ Q_{0i}^{s,t} + \alpha_x \left( \frac{\theta_0^t}{\tau^M_s} - p^{s,T,t}_i \right) } \\
+                \tilde{l}_i^{infra, t+1} &= \Proj{ \tilde{l}_i^{infra,t} + \alpha_x \left( r_i^{infra,t} - \tilde{r}_i^t \right) }
+            \end{align}
+            \begin{remark}
+            $V_{nn'}^m$ no longer has a gradient step here; its update, together with the fleet/conservation duals $\lambda^{fleet}_m$ and $\lambda^{v\_cons}_{m,n}$ (also promoted outer — see the remark in Section 2.2), is given in step 4(d) below.
+            \end{remark}
+
+            Adjust iterative dual variables $\lambda^{t+1}$ via Lagrangian gradient descent steps:
+            \begin{align}
+                \lambda^{0, t+1} &= \Proj{ \lambda^{0,t} - \alpha_{\lambda} \left( \bar{q}^0 - \sum_{j,s} q^{0,js,t+1} \right) } \\
+                w^{0, t+1} &= \Proj{ w^{0,t} - \alpha_{\lambda} \left( \bar{H} - \sum_{j,s} q^{0,js,t+1} h^{0,js,t+1} \right) } \\
+                \rho_j^{s, t+1} &= \rho_j^{s,t} - \alpha_{\lambda} \left( \sum_{i,b} q^{ijsb,t+1} \overline{H} - \sum_{i,b} q^{ijsb,t+1}(h^{ijsb,t+1} + f^{ijsb,t+1}_h) - \sum_{i,b,s',k} q^{ijsb,t+1}_{s'k} f^{ijsb,t+1}_{s'k} \right) \\
+                \tilde{r}_i^{t+1} &= \Proj{ \tilde{r}_i^t - \alpha_{\lambda} \left( \bar{L}_i - \sum_{b} \tilde{l}^{b,t+1}_i - \sum_m \tilde{l}^{m,t+1}_i - \tilde{l}_i^{infra,t+1} \right) } \\
+                \bar{r}_i^{b, t+1} &= \Proj{ \bar{r}_i^{b,t} - \alpha_{\lambda} \left( \tilde{l}^{b,t+1}_i - \alpha_i^b \bar{l}^{b,(K)}_i \right) } \\
+                r_{i}^{b,r, t+1} &= \Proj{ r_{i}^{b,r,t} - \alpha_{\lambda} \left( \bar{l}^{b,(K)}_i - \sum_{j,s} q^{ijsb,t+1} l^{ijsb,t+1} \right) } \\
+                r_j^{b,nr, t+1} &= \Proj{ r_j^{b,nr,t} - \alpha_{\lambda} \left( \bar{l}^{b,(K)}_j - \sum_s L^{sb,t+1}_j \right) } \\
+                r_j^{p, t+1} &= \Proj{ r_j^{p,t} - \alpha_{\lambda} \left( \bar{l}^{p,(K)}_j - L^p_{j,t+1} \right) } \\
+                r_{i}^{infra, t+1} &= \Proj{ r_{i}^{infra,t} - \alpha_{\lambda} \left( \tilde{l}_i^{infra,t+1} - \sum_{n'} \alpha^{infra} \frac{I_{nn'}^{(K)} \mathbb{I}_{n=i} + I_{nn'}^{(K)} \mathbb{I}_{n'=i}}{2} \right) } \\
+                \pi_j^{s, t+1} &= \Proj{ \pi_j^{s,t} - \alpha_{\lambda} \left( F_j^s(H_j^{s,t+1}, L_j^{sb,t+1}, Q_j^{ss',t+1}) - Y_j^{s,t+1} \right) } \\
+                \pi_j^{p, t+1} &= \Proj{ \pi_j^{p,t} - \alpha_{\lambda} \left( F_j^p(H_j^{p,t+1}, L_j^{p,(K)}) - Y_j^{p,(K)} \right) } \\
+                \pi_{nn'}^{m, t+1} &= \Proj{ \pi_{nn'}^{m,t} - \alpha_{\lambda} \left( F_{nn'}^m(H_{nn'}^{m,t+1}) - V_{nn'}^{m,(K)} \right) } \\
+                w_j^{s, t+1} &= \Proj{ w_j^{s,t} - \alpha_{\lambda} \left( \sum_{i,b} q^{ijsb,t+1} h^{ijsb,t+1} + q^{0,js,t+1} h^{0,js,t+1} - H_j^{s,t+1} \right) } \\
+                w_{m}^{t+1} &= \Proj{ w_{m}^t - \alpha_{\lambda} \left( \sum_{nn'} H_{nn'}^{m,t+1} - H^m_{\text{allocated}} \right) } \\
+                p_i^{s', T, t+1} &= \Proj{ p_i^{s', T,t} - \alpha_{\lambda} \left( Y_i^{s',t+1} + \sum_{j \in \mathcal{I}} \tilde{Q}_{ji}^{s',t+1} + \mathbb{I}_{i \in \mathcal{N}^G} \tilde{Q}_{0i}^{s',t+1} - \mathcal{C}^{\text{total}, s'}_i \right) }
+            \end{align}
+            Where total commercial freight absorption $\mathcal{C}^{\text{total}, s'}_i$ at node $i$ expands explicitly to:
+            \begin{equation}
+                \mathcal{C}^{\text{total}, s'}_i = \sum_{j,s,b} q^{ijsb,t+1} c^{ijsb,t+1}_{s'} + \sum_{j,s,b} q^{ijsb,t+1}_{s'i} d^{ijsb,t+1}_{s'i} + \sum_{s} Q^{ss',t+1}_i + \mathbb{I}_{i \in \mathcal{N}^G} Q^{s'}_{i0,t+1}
+            \end{equation}
+            \begin{align}
+                p_i^{s', N, t+1} &= \Proj{ p_i^{s', N,t} - \alpha_{\lambda} \left( Y_i^{s',t+1} - \sum_{j,s,b} q^{ijsb,t+1}_{s'i} f^{ijsb,t+1}_{s'i} \right) } \\
+                \theta_0^{t+1} &= \Proj{ \theta_0^t - \alpha_{\lambda} \left( \sum_{i \in \mathcal{N}^G, s} \tau^E_s Q^s_{i0,t+1} - \sum_{i \in \mathcal{N}^G, s} \frac{\tilde{Q}^s_{0i,t+1}}{\tau^M_s} \right) } \\
+                \lambda^{\text{stat}, t+1}_{m,n} &= \Proj{ \lambda^{\text{stat},t}_{m,n} - \alpha_{\lambda} \left( F_n^m(\tilde{l}^{m,t+1}_n) - \sum_{n'} V_{nn'}^{m,(K)} - \sum_{n''} V_{n''n}^{m,(K)} \right) }
+            \end{align}
+            \begin{remark}
+            $\lambda^{fleet}_m$ and $\lambda^{v\_cons}_{m,n}$ no longer appear in this block: as established in Section 2.2, their defining constraints involve only $V^m_{nn'}$ (now an outer-cycle constant) and fixed background cost functions, leaving no inner degree of freedom for them to react to. They are updated once per outer cycle alongside $V^m_{nn'}$ in step 4(d) below.
+            \end{remark}
+
+            \item \textit{Inner Loop Convergence Check}: Loop until the reduced residual norm satisfies $\|\nabla \mathcal{L}_t\|_{\infty} < \epsilon_{int}$. Denote the converged inner-loop fixed point by superscript $t^*$.
+        \end{enumerate}
+        \item \textit{Fixed Point Updates (MSA)}: Aggregate user-induced assignments into link flow indicators $\hat Q_{nn'}^{\text{induced}}$ gathered on-the-fly from shortest-path computations. Damp assignment updates via:
+        \begin{equation}
+            \hat Q_{nn'}^{(K+1)} = \left(1-\frac{1}{K}\right)\hat Q_{nn'}^{(K)} + \frac{1}{K} \hat Q_{nn'}^{\text{induced}}
+        \end{equation}
+        Apply the identical successive smoothing weight to total parking demand $y_k^{P,(K+1)}$ and station boarding counts $Q_{nn'}^{m,B,(K+1)}$.
+        \item \textbf{Outer Structural Capacity Updates}: All quantities below use the values of $\mathcal{X}$, $\Lambda$, $\mathcal{Y}$, $\mathcal{K}$ at the converged inner-loop fixed point $t^*$ for outer cycle $K$. The four sub-updates (a)--(d) are mutually Jacobi-style: each uses the \emph{start-of-cycle} $(K)$-level value of every other outer-structural variable, never a value already advanced to $(K+1)$ within this same step.
+        \begin{enumerate}
+            \item \emph{Infrastructure} ($I_{nn'}$, non-convex / combinatorial — Simulated Annealing). Compute the complete analytical network marginal product of investment:
+            \begin{align}
+                \gamma^I_{nn'} = -\sum_{ijsb} \rho^s_j \cdot \omega_w \cdot \partial_2 T_{nn'} \cdot \left( q^{ijsb}_{nn'} + \sum_{s',k} q^{ijsb}_{s'k,nn'} \right) + \sum_{s,ij} \nu^s_{ij,n'} \cdot \partial_2 \tau^s_{nn'} \cdot Q^s_{ij,nn'} \nonumber \\
+                - \sum_{m} \mathbb{I}_{nn' \in \mathcal{L}^m} \cdot \lambda_m^{\text{fleet},(K)} \cdot V_{nn'}^{m,(K)} \cdot \partial_2 T_{nn'}
+            \end{align}
+            Generate a candidate configuration $I_{nn'}^{\text{cand}} = \ProjBnd{I_{nn'}^{(K)} + \alpha_I \gamma^I_{nn'}}{\underline{I}_{nn'}}{\overline{I}_{nn'}}$. Evaluate changes in the global objective function $\Delta \mathcal{L}$. The candidate is accepted if $\Delta \mathcal{L} \ge 0$, or else with a Boltzmann transition probability defined by:
+            \begin{equation}
+                P(\text{accept}) = \exp\left( \frac{\Delta \mathcal{L}}{\mathcal{T}_K} \right)
+            \end{equation}
+            Where $\mathcal{T}_K$ is updated via a geometric cooling schedule $\mathcal{T}_{K+1} = c_{cool} \cdot \mathcal{T}_K$. The Multi-Start strategy periodically restarts this search from multiple random initial configurations of $I_{nn'}$ to mitigate entrapment in poor local optima.
+
+            \item \emph{Floor space} ($\bar l_i^b$, $\forall b\in\mathcal{B}$, including parking floor space — plain gradient ascent, no annealing). This update is the outer-loop analogue of the inner-loop stationarity condition for $\bar l_i^b$ (Eq.~\ref{eq:fonc_asset_building} below), evaluated at $t^*$:
+            \begin{equation}
+                \bar l_i^{b,(K+1)} = \Proj{\bar l_i^{b,(K)} + \alpha_l \left( r_i^{b,\text{type},t^*} - \alpha_i^b \bar r_i^{b,t^*} - \beta^{(K)} \bar\kappa_{i,b} \right)}, \quad r_i^{b,\text{type}} \in \{r_i^{b,r}, r_j^{b,nr}, r_j^p\}
+                \label{eq:outer_floorspace}
+            \end{equation}
+
+            \item \emph{Parking-hours supply} ($Y_k^p$, $\forall p \in \mathcal{P}$ — plain gradient ascent, no annealing). $Y_k^p$ enters the Lagrangian through (i) the parking production constraint with multiplier $\pi_k^p$, and (ii) the time constraint through $T^P_k(y_k^P, S_k)$ with $S_k = \sum_{p'} Y_k^{p'}$, with stationarity condition
+            \begin{equation}
+                \frac{\partial \mathcal{L}}{\partial Y_k^p} = -\pi_k^p - \sum_{ijsb} \rho_j^s\,\omega_w\, y_k^{P,ijsb} \cdot \partial_2 T^P_k(y_k^P, S_k) = 0,
+            \end{equation}
+            which is the FONC already stated in Eq.~\ref{eq:fonc_parking_hours_value} below. The corresponding gradient ascent step, evaluated at $t^*$, is:
+            \begin{equation}
+                Y_k^{p,(K+1)} = \Proj{Y_k^{p,(K)} - \alpha_Y \left( \pi_k^{p,t^*} + \sum_{ijsb} \rho_j^{s,t^*}\,\omega_w\, y_k^{P,ijsb,t^*} \cdot \partial_2 T^P_k\!\left(y_k^{P,t^*}, S_k^{(K)}\right) \right)}
+                \label{eq:outer_parking_supply}
+            \end{equation}
+            with $S_k^{(K)} = \sum_{p'} Y_k^{p',(K)}$. Note the minus sign in front of $\alpha_Y$: $\partial\mathcal{L}/\partial Y_k^p$ already carries a negative sign on both terms, so $-\alpha_Y\,\partial\mathcal{L}/\partial Y_k^p$ correctly ascends $\mathcal{L}$ in the direction $+\alpha_Y(-\partial\mathcal{L}/\partial Y_k^p)$; writing it instead as $+\alpha_Y\,\partial \mathcal{L}/\partial Y_k^p$ would be the sign error to avoid here.
+
+            \item \emph{Transit vehicle flow and its fleet/conservation duals} ($V^m_{nn'}$, $\lambda^{fleet}_m$, $\lambda^{v\_cons}_{m,n}$ — plain gradient steps, no annealing). As established in Section 2.2, once $V^m_{nn'}$ leaves the inner loop, $\lambda^{fleet}_m$ and $\lambda^{v\_cons}_{m,n}$ must leave with it. The marginal operational fleet penalty cost $\Psi_{nn'}^{m,(K)}$, evaluated at $t^*$ for all inner quantities and at $(K)$ for all outer-structural quantities, is:
+            \begin{align}
+                \Psi_{nn'}^{m,(K)} &= \lambda^{\text{stat},t^*}_{m,n} + \lambda^{\text{stat},t^*}_{m,n'} + \lambda^{\text{fleet},(K)}_m \left[ T_{nn'}^{(K)} + T^{m,board,(K)}_{nn'} + V^{m,(K)}_{nn'} \cdot \partial_2 T^{m,board}_{nn'} \right] \nonumber \\
+                &\quad + \sum_{ijsb} \rho^{s,t^*}_j \cdot \omega_w \left[ q^{ijsb,t^*}_{nn'} \cdot \partial_2 T^{m,board}_{nn'} + q^{m,B,ijsb,t^*}_{nn'} \cdot \partial t^{m,W}_{nn'} \right]
+            \end{align}
+            where $T^{m,board}_{nn'}$ and its partials are evaluated at $\big(Q_{nn'}^{m,B,(K)}, V_{nn'}^{m,(K)}\big)$ and $t^{m,W}_{nn'}$ at $V_{nn'}^{m,(K)}$. The three updates are:
+            \begin{align}
+                V_{nn'}^{m,(K+1)} &= \Proj{ V_{nn'}^{m,(K)} + \alpha_V \left( \pi^{m,t^*}_{nn'} + \lambda^{\text{v-cons},(K)}_{m,n'} - \lambda^{\text{v-cons},(K)}_{m,n} - \Psi_{nn'}^{m,(K)} \right) } \\
+                \lambda^{\text{fleet}, (K+1)}_m &= \Proj{ \lambda^{\text{fleet},(K)}_m - \alpha_{\lambda} \left( \bar{V}^m - \sum_{nn'} V_{nn'}^{m,(K)} \left( T_{nn'}^{(K)} + T^{m,board,(K)}_{nn'} \right) \right) } \\
+                \lambda^{\text{v\_cons}, (K+1)}_{m,n} &= \lambda^{\text{v\_cons},(K)}_{m,n} - \alpha_{\lambda} \left( \sum_{n''} V_{n''n}^{m,(K)} - \sum_{n'} V_{nn'}^{m,(K)} \right)
+            \end{align}
+        \end{enumerate}
+
+        \item Evaluate first-rank network congestion fees directly from stable shadow profiles. Inner-loop quantities ($\rho$, $\nu$, $q$) use the converged inner-loop fixed point $t^*$; outer-structural quantities ($\lambda^{fleet}$, $V^m_{nn'}$) use the values just produced in step 4(d), i.e.\ $(K+1)$, since this step runs after the structural updates:
+\begin{align}
+    \gamma_{nn'}^{(K+1)} &= \sum_{ijsb} \rho^{s,t^*}_j \cdot \omega_w \cdot \partial_1 T_{nn'}\!\left(\hat{Q}_{nn'}^{(K)}, I_{nn'}^{(K)}\right) \cdot \left( q^{ijsb,t^*}_{nn'} + \sum_{s',k} q^{ijsb,t^*}_{s'k,nn'} \right) \nonumber \\
+    &\quad - \sum_{s,ij} \nu^{s,t^*}_{ij,n'} \cdot \partial_1 \tau^s_{nn'}\!\left(\hat{Q}_{nn'}^{(K)}, I_{nn'}^{(K)}\right) \cdot Q^{s,t^*}_{ij,nn'} \nonumber \\
+    &\quad + \sum_{m} \mathbb{I}_{nn' \in \mathcal{L}^m} \cdot \lambda^{\text{fleet},(K+1)}_m \cdot V_{nn'}^{m,(K+1)} \cdot \partial_1 T_{nn'}\!\left(\hat{Q}_{nn'}^{(K)}, I_{nn'}^{(K)}\right) \\
+    \gamma^{\text{board}, (K+1)}_{m,nn'} &= \left( \lambda^{\text{fleet},(K+1)}_m \cdot V^{m,(K+1)}_{nn'} + \sum_{ijsb} \rho^{s,t^*}_j \cdot \omega_w \cdot q^{ijsb,t^*}_{nn'} \right) \cdot \partial_1 T^{m,board}_{nn'}\!\left(Q_{nn'}^{m,B,(K)}, V_{nn'}^{m,(K+1)}\right) \\
+    \gamma^{\text{park}, (K+1)}_k &= \sum_{ijsb} \rho^{s,t^*}_j \cdot \omega_w \cdot \left( \sum_{s'} q^{ijsb,t^*}_{s'k} \cdot \mathbb{I}_{s' \in \mathcal{S}^P} \right) \cdot \partial_1 T^P_k\!\left(y_k^{P,(K)}, S_k^{(K+1)}\right)
+\end{align}
+        Smooth pricing matrices using the MSA protocol before starting outer cycle $K+1$.
+        \item Update global long-term capital budget shadow value $\beta$ via projected descent:
+        \begin{equation}
+            \beta^{(K+1)} = \Proj{ \beta^{(K)} - \alpha_{\beta} \left( K - \sum_{nn'} \kappa_{nn'} I_{nn'}^{(K+1)} - \sum_{b,i} \bar{l}^{b,(K+1)}_i \bar{\kappa}_{i,b} \right) }
+        \end{equation}
+    \end{enumerate}
+    \item \textbf{Termination Criterion}: Halt all procedures once outer loop profiles stabilize under tolerance bounds: $\left\|\big(\mathcal{Z}^{(K+1)}, \mathcal{O}^{(K+1)}, \beta^{(K+1)}\big) - \big(\mathcal{Z}^{(K)}, \mathcal{O}^{(K)}, \beta^{(K)}\big)\right\|_\infty < \epsilon_{ext}$.
+\end{enumerate}
+
+\begin{remark}[Reference FONCs used above]
+For completeness, the two stationarity conditions referenced in the outer structural updates are, in their original (asset-deployment and parking-operating-return) form:
+\begin{align}
+    \alpha^b_i \cdot \bar{r}^b_i + \beta \cdot \bar{\kappa}_{i,b} &= r^b_i, \quad r^b_i \in \{r_i^{b,r}, r_i^{b,nr}, r_i^p\}, \quad \forall b \in \mathcal{B},\,\forall i \in \mathcal{I} \label{eq:fonc_asset_building} \\
+    \pi^p_k &= -\sum_{ijsb} \rho^s_j \cdot \omega_w \cdot y^{P,ijsb}_k \cdot \partial_2 T^P_k(y_k^P, S_k) \quad \forall p \in \mathcal{S}^{\mathrm{park}},\,\forall k \in \mathcal{I} \label{eq:fonc_parking_hours_value}
+\end{align}
+\end{remark}
+
+\subsection{Notes on Algorithmic Complexity and Memory Footprint}
+
+\textbf{Time Complexity:}
+The computational burden is dominated by repeated evaluations of network routing steps inside the inner loop.
+\begin{itemize}
+    \item For passenger layers, executing a binary-heap optimized Dijkstra search across all origin-destination pairs requires a computational time of order $\mathcal{O}\bigl( |\mathcal{I}| \cdot |\mathcal{B}^r| \cdot (|\mathcal{E}| + |\mathcal{N}|\log|\mathcal{N}|) \bigr)$, where $|\mathcal{E}|$ represents the total number of network edges.
+    \item For the commercial freight layer, the modified Bellman-Ford routine evaluates in $\mathcal{O}(|\mathcal{S}^T| \cdot |\mathcal{I}| \cdot |\mathcal{N}| \cdot |\mathcal{E}|)$. Multiplying these limits by inner ($t$) and outer ($K$) iterations justifies employing a native multi-threaded layout in Python (using \texttt{multiprocessing} or \texttt{Numba}).
+\end{itemize}
+
+\noindent\textbf{Spatial Complexity and Memory Bounds:}
+Direct storage of fine-grained specific matrix components yields prohibitive limits scaling as $\mathcal{O}(|\mathcal{I}|^3 \cdot |\mathcal{S}| \cdot |\mathcal{B}^r| \cdot |\mathcal{E}|)$. To handle large metropolitan networks, the script must map link connections exclusively using Compressed Sparse Row (CSR) matrix layouts and aggregate link flows on-the-fly. Fine-grained user path distributions are flushed from memory immediately after completing their specific routing calculation.
+
+\end{document}

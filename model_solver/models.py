@@ -54,6 +54,7 @@ class Network:
     n_nodes: Optional[int] = None
     edges: Optional[List[Tuple[int, int]]] = None
     n_modes: int = 1
+    #define modes ? public transit modes, car ?
     n_edges: Optional[int] = None
     kappa: np.ndarray = field(default_factory=lambda: np.array([], dtype=float))
     I_min: np.ndarray = field(default_factory=lambda: np.array([], dtype=float))
@@ -88,25 +89,42 @@ class ModelParams:
     # ---- Sizes ----
     n_zones: int                                  # |I|
     n_sectors: int                                # |S|
+    #réfléchir à comment ajouter les différences entre non-tradable, non tradable etc.
+    n_b_r:int                                           # |B^r|, number of residential land types
+    n_b_nr:int                                           # |B^nr|, number of residential land types
+    n_p: int                                          # |P|, number of parking types (eg. garage, street, underground)
+    #est-ce que c'est nécessaire de définir les ensembles explicitement
 
     # ---- Production ----
     production_function: ProductionFunction  # function to compute output Y given inputs H, L, Q_inp
+    vehicle_production_function: ProductionFunction  # function to compute output Y given inputs H_{nn'}^m
+    parking_production_function: ProductionFunction  # function to compute output Y given H, L, Q
+    fleet_production_function: ProductionFunction  # function to compute output Y given H, L
 
     # ---- Households ----
     utility_function: UtilityFunction  # function to utility U given consumption c and land l
+    utility_function_bis_s : UtilityFunction  # function to utility u given for all GS sector s, given and f or f only --> est-ce qu'il faut une autre classe de fonction ?
 
     # ---- Endowments ----
     L_bar: np.ndarray                             # land per zone, shape (J,)
     H_bar: float                                  # total time per capita
     q_bar: float                                  # total population
     K: float                                      # infrastructure budget
+    q_bar_0: float                                # peripheral labor pool capacity
+    V_m : np.ndarray                              # fleet size per mode, shape (M,)
+
 
     # ---- Iceberg costs ---
-    sector_depedance_tau: Optional[np.array]
-    tau_link: TauLink  # per-edge iceberg cost, shape (n_edges,) given infrastructure I_infra and flow Qhat
+    tau_link: TauLink  # per-edge and per sectoriceberg cost, shape (n_edges, n_sectors) given infrastructure I_infra and flow Qhat
 
     # ---- Transportation time ----
     t_link: TimeLink  # per-edge transport time, shape (n_edges,) given infrastructure I_infra and flow Qhat
+
+    # Parking search time
+    t_park_node: ParkingSearchTimeNode  # per-node parking search time, shape (n_zones,) given parking hours demand y^P and parking hours supply sum Y^p
+
+    # Boarding time
+    t_board_link: BoardingTimeLink  # per-edge boarding time, shape (n_edges, n_modes) given in
 
     # ---- Transport ----
     d_w: float                                    # working days (time -> cost conversion)
@@ -161,6 +179,182 @@ class ModelState:
     I_infra: np.ndarray                           # infrastructure levels, shape (n_edges,)
     gamma_I: np.ndarray                           # infra gradient,  shape (n_edges,)
 
+    # --- routing potentials ---
+    mu_commuter: np.ndarray = field(default_factory=lambda: np.array([]))
+    nu_goods: np.ndarray = field(default_factory=lambda: np.array([]))
+
+    # ---- Multimodal / parking / boarding outer variables ----
+    y_k_P: np.ndarray = field(default_factory=lambda: np.array([]))
+    Q_m_B: np.ndarray = field(default_factory=lambda: np.array([]))
+    gamma_park: np.ndarray = field(default_factory=lambda: np.array([]))
+    gamma_board: np.ndarray = field(default_factory=lambda: np.array([]))
+    V_m: np.ndarray = field(default_factory=lambda: np.array([]))
+    w_m: np.ndarray = field(default_factory=lambda: np.array([]))
+    lambda_fleet_m: np.ndarray = field(default_factory=lambda: np.array([]))
+    lambda_v_cons_mn: np.ndarray = field(default_factory=lambda: np.array([]))
+    lambda_stat_mn: np.ndarray = field(default_factory=lambda: np.array([]))
+
+    # ---- Household / production extended variables ----
+    h_ijsb: np.ndarray = field(default_factory=lambda: np.array([]))
+    l_bar_b: np.ndarray = field(default_factory=lambda: np.array([]))
+    l_tilde_b: np.ndarray = field(default_factory=lambda: np.array([]))
+    q0_js: np.ndarray = field(default_factory=lambda: np.array([]))
+    h0_js: np.ndarray = field(default_factory=lambda: np.array([]))
+    Q_i0: np.ndarray = field(default_factory=lambda: np.array([]))
+    Q_0i: np.ndarray = field(default_factory=lambda: np.array([]))
+    l_tilde_infra: np.ndarray = field(default_factory=lambda: np.array([]))
+
+    # ---- dual prices and analytical shadow values ----
+    lambda0: float = 0.0
+    w0: float = 0.0
+    rho_js: np.ndarray = field(default_factory=lambda: np.array([]))
+    r_tilde_i: np.ndarray = field(default_factory=lambda: np.array([]))
+    r_bar_b: np.ndarray = field(default_factory=lambda: np.array([]))
+    r_b_r: np.ndarray = field(default_factory=lambda: np.array([]))
+    r_j_b_nr: np.ndarray = field(default_factory=lambda: np.array([]))
+    r_j_p: np.ndarray = field(default_factory=lambda: np.array([]))
+    r_i_infra: np.ndarray = field(default_factory=lambda: np.array([]))
+    pi_j_s: np.ndarray = field(default_factory=lambda: np.array([]))
+    pi_j_p: np.ndarray = field(default_factory=lambda: np.array([]))
+    pi_nn_m: np.ndarray = field(default_factory=lambda: np.array([]))
+    w_j_s: np.ndarray = field(default_factory=lambda: np.array([]))
+    p_i_s_T: np.ndarray = field(default_factory=lambda: np.array([]))
+    p_i_s_N: np.ndarray = field(default_factory=lambda: np.array([]))
+    theta_0: float = 1.0
+
+    # ---- analytical demand / flow variables ----
+    q_ijs: np.ndarray = field(default_factory=lambda: np.array([]))
+    q_ijsb: np.ndarray = field(default_factory=lambda: np.array([]))
+    q_ijsb_s_k: np.ndarray = field(default_factory=lambda: np.array([]))
+    c_ijsb_s: np.ndarray = field(default_factory=lambda: np.array([]))
+    d_ijsb_s_k: np.ndarray = field(default_factory=lambda: np.array([]))
+    l_ijsb: np.ndarray = field(default_factory=lambda: np.array([]))
+    f_h_ijsb: np.ndarray = field(default_factory=lambda: np.array([]))
+    f_ijsb_s_k: np.ndarray = field(default_factory=lambda: np.array([]))
+    H_prod_sb: np.ndarray = field(default_factory=lambda: np.array([]))
+    L_prod_sb: np.ndarray = field(default_factory=lambda: np.array([]))
+    H_j_p: np.ndarray = field(default_factory=lambda: np.array([]))
+    H_nn_m: np.ndarray = field(default_factory=lambda: np.array([]))
+    l_tilde_m_n: np.ndarray = field(default_factory=lambda: np.array([]))
+    Y_j_p: np.ndarray = field(default_factory=lambda: np.array([]))
+
+    # ---- analytical dual potentials ----
+    xi_ijsb_k: np.ndarray = field(default_factory=lambda: np.array([]))
+    chi_m_nn_ijsb: np.ndarray = field(default_factory=lambda: np.array([]))
+    mu_ijsb_n: np.ndarray = field(default_factory=lambda: np.array([]))
+    mu_ijsb_s_k_n: np.ndarray = field(default_factory=lambda: np.array([]))
+    nu_s_ij_n: np.ndarray = field(default_factory=lambda: np.array([]))
+    mu_0js_n: np.ndarray = field(default_factory=lambda: np.array([]))
+
+    def initialize_extended(self, params):
+        S = params.n_sectors
+        I = params.n_zones
+        J = params.n_zones
+        n_edges = params.network.n_edges
+        n_nodes = params.network.n_nodes
+        B = 1
+        M = 1
+        if self.h_ijsb.size == 0:
+            self.h_ijsb = np.zeros((S, I, J, B))
+        if self.l_bar_b.size == 0:
+            self.l_bar_b = np.zeros((I, B))
+        if self.l_tilde_b.size == 0:
+            self.l_tilde_b = np.zeros((I, B))
+        if self.q0_js.size == 0:
+            self.q0_js = np.zeros((S, I))
+        if self.h0_js.size == 0:
+            self.h0_js = np.zeros((S, I))
+        if self.Q_i0.size == 0:
+            self.Q_i0 = np.zeros((S, I))
+        if self.Q_0i.size == 0:
+            self.Q_0i = np.zeros((S, I))
+        if self.l_tilde_infra.size == 0:
+            self.l_tilde_infra = np.zeros(I)
+        if self.rho_js.size == 0:
+            self.rho_js = np.zeros((S, I))
+        if self.r_tilde_i.size == 0:
+            self.r_tilde_i = np.zeros(I)
+        if self.r_bar_b.size == 0:
+            self.r_bar_b = np.zeros((I, B))
+        if self.r_b_r.size == 0:
+            self.r_b_r = np.zeros((I, B))
+        if self.r_j_b_nr.size == 0:
+            self.r_j_b_nr = np.zeros((I, B))
+        if self.r_j_p.size == 0:
+            self.r_j_p = np.zeros(I)
+        if self.r_i_infra.size == 0:
+            self.r_i_infra = np.zeros(I)
+        if self.pi_j_s.size == 0:
+            self.pi_j_s = np.zeros((S, I))
+        if self.pi_j_p.size == 0:
+            self.pi_j_p = np.zeros(I)
+        if self.pi_nn_m.size == 0:
+            self.pi_nn_m = np.zeros((M, n_edges))
+        if self.w_j_s.size == 0:
+            self.w_j_s = np.zeros((S, I))
+        if self.w_m.size == 0:
+            self.w_m = np.zeros(M)
+        if self.p_i_s_T.size == 0:
+            self.p_i_s_T = np.zeros((S, I))
+        if self.p_i_s_N.size == 0:
+            self.p_i_s_N = np.zeros((S, I))
+        if self.y_k_P.size == 0:
+            self.y_k_P = np.zeros(n_nodes)
+        if self.Q_m_B.size == 0:
+            self.Q_m_B = np.zeros((M, n_edges))
+        if self.gamma_park.size == 0:
+            self.gamma_park = np.zeros(n_nodes)
+        if self.gamma_board.size == 0:
+            self.gamma_board = np.zeros((M, n_edges))
+        if self.V_m.size == 0:
+            self.V_m = np.zeros((M, n_edges))
+        if self.lambda_fleet_m.size == 0:
+            self.lambda_fleet_m = np.zeros(M)
+        if self.lambda_v_cons_mn.size == 0:
+            self.lambda_v_cons_mn = np.zeros((M, n_nodes))
+        if self.lambda_stat_mn.size == 0:
+            self.lambda_stat_mn = np.zeros((M, n_nodes))
+        if self.q_ijs.size == 0:
+            self.q_ijs = np.zeros((S, I, J))
+        if self.q_ijsb.size == 0:
+            self.q_ijsb = np.zeros((S, I, J, B))
+        if self.q_ijsb_s_k.size == 0:
+            self.q_ijsb_s_k = np.zeros((S, I, J, S, B))
+        if self.c_ijsb_s.size == 0:
+            self.c_ijsb_s = np.zeros((S, S, I, J, B))
+        if self.d_ijsb_s_k.size == 0:
+            self.d_ijsb_s_k = np.zeros((S, S, I, J, B))
+        if self.l_ijsb.size == 0:
+            self.l_ijsb = np.zeros((S, I, J, B))
+        if self.f_h_ijsb.size == 0:
+            self.f_h_ijsb = np.zeros((S, I, J, B))
+        if self.f_ijsb_s_k.size == 0:
+            self.f_ijsb_s_k = np.zeros((S, I, J, S, B))
+        if self.H_prod_sb.size == 0:
+            self.H_prod_sb = np.zeros((S, I, B))
+        if self.L_prod_sb.size == 0:
+            self.L_prod_sb = np.zeros((S, I, B))
+        if self.H_j_p.size == 0:
+            self.H_j_p = np.zeros(I)
+        if self.H_nn_m.size == 0:
+            self.H_nn_m = np.zeros((M, n_edges))
+        if self.l_tilde_m_n.size == 0:
+            self.l_tilde_m_n = np.zeros((M, n_nodes))
+        if self.Y_j_p.size == 0:
+            self.Y_j_p = np.zeros(I)
+        if self.xi_ijsb_k.size == 0:
+            self.xi_ijsb_k = np.zeros((S, I, J, B, S))
+        if self.chi_m_nn_ijsb.size == 0:
+            self.chi_m_nn_ijsb = np.zeros((M, n_edges, S, I, J, B))
+        if self.mu_ijsb_n.size == 0:
+            self.mu_ijsb_n = np.zeros((S, I, J, B, n_nodes))
+        if self.mu_ijsb_s_k_n.size == 0:
+            self.mu_ijsb_s_k_n = np.zeros((S, I, J, S, B, n_nodes))
+        if self.nu_s_ij_n.size == 0:
+            self.nu_s_ij_n = np.zeros((S, I, J, n_nodes))
+        if self.mu_0js_n.size == 0:
+            self.mu_0js_n = np.zeros((S, J, n_nodes))
+
 
 @dataclass
 class AlgoParams:
@@ -179,8 +373,8 @@ class AlgoParams:
 
     # Inner loop (flows)
     T_inner: int = 50
-    alpha_Q: float = 0.2                          # volume update step
-    alpha_Qhat: float = 0.3                       # MSA damping on Qhat
+    alpha_Q: float = 0.2                          # volume update step for primal flow update
+    alpha_Qhat: float = 0.3                       # legacy MSA damping parameter; actual outer-loop update follows theta_K = 1/(K+1)
     eta_gamma: float = 0.01
 
     # Tolerances
@@ -201,9 +395,15 @@ class AlgoParams:
     # Check the code of MSA --> maybe replace linear decay by MSA as MSA will not be needed anymore. 
     # Simulated Annealing
     sa_enabled: bool = False
-    sa_T_init : float = 5.0 #intial temperature
-    sa_alpha: float = 0.98 #cooling rate
-    sa_noise_scale: float = 0.1 #scale of the noise added to the gradients
+    sa_T_init : float = 5.0 # initial temperature
+    sa_alpha: float = 0.98  # cooling rate
+    sa_noise_scale: float = 0.1 # scale of the noise added to the gradients
+
+    # Inner-outer gradient step sizes
+    alpha_Q: float = 0.05
+    alpha_Qhat: float = 0.3
+    alpha_lambda: float = 0.05
+    eta_I: float = 0.01
 
     def sa_temperature(self, t: int) -> float:
         """Return the simulated annealing temperature at iteration t."""
