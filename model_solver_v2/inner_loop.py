@@ -22,6 +22,7 @@ document's superscripts:
 import numpy as np
 
 from .algo_params import AlgoParams
+from .convergence import argmax_residual
 from .inclusive_value import InclusiveValueBlock
 from .params import ModelParams
 from .routing import (CommuterRoutingBlock, FreightRoutingBlock,
@@ -36,14 +37,14 @@ _EPS = 1e-8
 # spike instead of letting it propagate into an irrecoverable blow-up,
 # without affecting the well-behaved (ratio ~ 1) regime the document assumes.
 _RATIO_CLIP = 1e3
-# rho_j^s (eq. 44) is deliberately left unprojected and enters several
-# target-price arguments (eq. 26/27) as an additive component. A Cobb-Douglas
-# inv_grad computes alpha/price, so once price drifts non-positive the
-# functional_forms.py-level 1e-8 floor turns a mildly-negative price into a
-# ~1e8-scale demand spike. Flooring at a small but economically meaningful
-# price here (rather than at 1e-8) keeps that inversion well-behaved without
-# changing rho_j^s's own (unprojected) update rule.
-_PRICE_FLOOR = 0.1
+# rho_j^s (eq. 44, now projected >= 0 -- see DualGradientBlock) enters
+# several target-price arguments (eq. 26/27) as an additive component
+# alongside other (also nonnegative) terms. A Cobb-Douglas inv_grad
+# computes alpha/price, so once a price gets close to 0 the
+# functional_forms.py-level 1e-8 floor can still turn it into a ~1e8-scale
+# demand spike. Flooring at a small but economically meaningful price here
+# (rather than at 1e-8) keeps that inversion well-behaved.
+_PRICE_FLOOR = 0.001
 
 
 class AnalyticalPrimalBlock:
@@ -147,10 +148,10 @@ class PrimalGradientBlock:
     """Eq. 32-41: synchronous projected-ascent update of the iterative
     primal vector X."""
 
-    def solve(self, state: ModelState, params: ModelParams, algo: AlgoParams, xi_prev):
+    def solve(self, state: ModelState, params: ModelParams, algo: AlgoParams, xi_prev, t: int):
         S, I = params.n_sectors, params.n_zones
         net = params.network
-        a = algo.alpha_x
+        a = algo.eta(algo.alpha_x, t)
 
         h_old = state.h_ijsb.copy()
         l_res_old, l_nonres_old, l_park_old = (state.l_tilde_res.copy(), state.l_tilde_nonres.copy(),
@@ -189,13 +190,21 @@ class PrimalGradientBlock:
         Qt_new = np.maximum(0.0, Qt_old + a * (nu_at_j - state.p_sT[:, None, :]))
 
         # eq. 37: q^{0,js,t+1}
+        # routing.py's mu is stored "cost-to-destination" (mu_destination=0,
+        # mu_origin=full trip cost -- a single-destination-anchored Dijkstra),
+        # whereas eq. 8's FOC inequality (mu_{n'} - mu_n <= cost(n,n')) implies
+        # a "cost-from-origin" convention (mu_origin=0, mu_destination=full
+        # cost). Since mu_mine(n) + mu_document(n) = full trip cost for any n
+        # on the path, every document term (mu_X - mu_Y) becomes (mu_Y - mu_X)
+        # when evaluated with the stored (mirrored) values -- i.e. the sign
+        # is flipped relative to a literal transcription.
         mu_at_j = np.zeros((S, I))
         mu_at_ng = np.zeros((S, I))
         for j in range(I):
             j_node = net.zone_to_node(j)
             mu_at_j[:, j] = state.mu_0js_n[:, j, j_node]
             mu_at_ng[:, j] = state.mu_0js_n[:, j, net.entry_node]
-        q0_new = np.maximum(0.0, q0_old + a * (state.w_js * h0_old - state.lambda0 - (mu_at_j - mu_at_ng)))
+        q0_new = np.maximum(0.0, q0_old + a * (state.w_js * h0_old - state.lambda0 + (mu_at_j - mu_at_ng)))
 
         # eq. 38: h^{0,js,t+1} (bracket reduces to gamma_j^{park}*q0_js^t, see module docstring derivation)
         h0_new = np.maximum(0.0, h0_old + a * (state.w_js * q0_old - state.w0 - state.gamma_park_k[None, :] * q0_old))
@@ -218,14 +227,15 @@ class PrimalGradientBlock:
 
 class DualGradientBlock:
     """Eq. 42-60: synchronous projected-descent update of the iterative
-    dual vector Lambda. eq. 44 (rho_j^s) is deliberately left unprojected,
-    matching the document (no max(0, .) wraps it there)."""
+    dual vector Lambda, including rho_j^s (eq. 44) -- see the projection
+    note at that line for why it's projected despite the document's
+    literal eq. 44 omitting the \\Proj{...} wrapper other duals carry."""
 
-    def solve(self, state: ModelState, params: ModelParams, algo: AlgoParams):
+    def solve(self, state: ModelState, params: ModelParams, algo: AlgoParams, t: int):
         S, I = params.n_sectors, params.n_zones
         M = params.n_modes_transit
         net = params.network
-        a = algo.alpha_lambda
+        a = algo.eta(algo.alpha_lambda, t)
 
         lambda0_old, w0_old = state.lambda0, state.w0
         rho_old = state.rho_js.copy()
@@ -246,11 +256,17 @@ class DualGradientBlock:
         # eq. 43: w^{0,t+1}
         w0_new = max(0.0, w0_old - a * (params.H_bar - float((state.q0_js * state.h0_js).sum())))
 
-        # eq. 44: rho_j^{s,t+1} (no projection)
+        # eq. 44: rho_j^{s,t+1}. The document's literal eq. 44 omits the
+        # \Proj{...} wrapper every other dual carries, but rho_j^s is the
+        # multiplier on the household time-budget constraint written as an
+        # inequality (time used <= H_bar) -- by standard KKT theory that
+        # multiplier must be >= 0 (a negative shadow price on a "<="
+        # constraint isn't a valid stationary point), so it is projected
+        # here like every other market-clearing dual.
         q_sum_ib = state.q_ijsb.sum(axis=(1, 3))  # sum over i,b -> (S,j)
         qh_sum = (state.q_ijsb * (state.h_ijsb + state.fh_ijsb)).sum(axis=(1, 3))  # (S,j)
         qf_sum = np.einsum('sijbka,sijbka->sj', state.q_ijsb_sk, state.f_ijsb_sk)
-        rho_new = rho_old - a * (q_sum_ib * params.H_bar - qh_sum - qf_sum)
+        rho_new = np.maximum(0.0, rho_old - a * (q_sum_ib * params.H_bar - qh_sum - qf_sum))
 
         # eq. 45: tilde r_i^{t+1}
         l_b_sum = state.l_tilde_res.sum(axis=1) + state.l_tilde_nonres.sum(axis=1) + state.l_tilde_park.sum(axis=1)
@@ -361,10 +377,25 @@ class InnerLoopBlock:
         self.analytical = AnalyticalPrimalBlock()
         self.primal_grad = PrimalGradientBlock()
         self.dual_grad = DualGradientBlock()
+        # Cumulative iteration counter shared by *both* alpha_x and
+        # alpha_lambda's decay (AlgoParams.eta): persists across every call
+        # to solve() over this instance's lifetime. Both step sizes must
+        # decay on the *same* basis so their ratio (deliberately set to
+        # 10:1, dual slower than primal, to avoid saddle-point oscillation)
+        # never drifts -- decaying them on different bases (e.g. one on this
+        # cumulative count, the other on the outer cycle K) lets the ratio
+        # depend on T_inner*T_msa and can flip which one is actually larger
+        # for large enough inner-loop depth. A single shared decay schedule
+        # also keeps the *inner* loop's own primal-dual game stable across
+        # its many iterations (Robbins-Monro): making alpha_x constant
+        # within a cycle (e.g. by decaying it on K alone) was tried and
+        # diverged, because it removed exactly this within-cycle damping.
+        self.global_t = 0
 
     def solve(self, state: ModelState, params: ModelParams, algo: AlgoParams):
         residual_history = []
-        for t in range(algo.T_inner):
+        for _ in range(algo.T_inner):
+            self.global_t += 1
             x_old_norm_inputs = self._snapshot_x(state)
 
             xi_prev = state.xi_ijsb_k.copy()
@@ -383,13 +414,14 @@ class InnerLoopBlock:
             self.cascade.solve(state, params)
             self.analytical.solve(state, params, xi_prev, q_ijsb_prev, q_ijsb_sk_prev)
 
-            # 2(b)(iii)+: gradient ascent-descent step
-            self.primal_grad.solve(state, params, algo, xi_prev)
-            self.dual_grad.solve(state, params, algo)
+            # 2(b)(iii)+: gradient ascent-descent step -- both decayed on
+            # the same cumulative counter, see __init__'s note.
+            self.primal_grad.solve(state, params, algo, xi_prev, self.global_t)
+            self.dual_grad.solve(state, params, algo, self.global_t)
 
             residual = self._residual(state, x_old_norm_inputs)
             residual_history.append(residual)
-            if residual < algo.tol_inner:
+            if residual['value'] < algo.tol_inner:
                 break
         return residual_history
 
@@ -400,11 +432,14 @@ class InnerLoopBlock:
 
     @staticmethod
     def _residual(state: ModelState, x_old):
+        """Returns {'value','variable','index'} identifying which named
+        primal quantity (and which entry within it) is responsible for
+        this iteration's max-abs-change -- see convergence.argmax_residual."""
         h_old, Y_old, Q_old, q0_old, h0_old = x_old
-        return max(
-            float(np.max(np.abs(state.h_ijsb - h_old))),
-            float(np.max(np.abs(state.Y_js - Y_old))),
-            float(np.max(np.abs(state.Q_ij_s - Q_old))),
-            float(np.max(np.abs(state.q0_js - q0_old))),
-            float(np.max(np.abs(state.h0_js - h0_old))),
-        )
+        return argmax_residual([
+            ('h_ijsb', state.h_ijsb - h_old),
+            ('Y_js', state.Y_js - Y_old),
+            ('Q_ij_s', state.Q_ij_s - Q_old),
+            ('q0_js', state.q0_js - q0_old),
+            ('h0_js', state.h0_js - h0_old),
+        ])

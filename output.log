@@ -1,0 +1,2255 @@
+nohup: ignoring input
+Outer-loop progress (live):
+  K=  1  residual=24.950501  responsible=Y_pk(1, 0)  msa_iters=200  inner_iters=218
+  K=  2  residual=1.627611  responsible=Qhat_nn(6,)  msa_iters=50  inner_iters=121
+  K=  3  residual=0.146765  responsible=Qhat_nn(0,)  msa_iters=30  inner_iters=30
+  K=  4  residual=0.742866  responsible=Qhat_nn(0,)  msa_iters=24  inner_iters=24
+  K=  5  residual=0.439527  responsible=Qhat_nn(9,)  msa_iters=20  inner_iters=20
+  K=  6  residual=0.094527  responsible=beta()  msa_iters=18  inner_iters=18
+  K=  7  residual=0.087857  responsible=beta()  msa_iters=17  inner_iters=17
+  K=  8  residual=0.082291  responsible=beta()  msa_iters=16  inner_iters=16
+  K=  9  residual=0.070390  responsible=beta()  msa_iters=17  inner_iters=17
+  K= 10  residual=0.044185  responsible=I_nn(4,)  msa_iters=15  inner_iters=15
+  K= 11  residual=0.058828  responsible=Qhat_nn(4,)  msa_iters=18  inner_iters=18
+  K= 12  residual=0.013010  responsible=Qhat_nn(4,)  msa_iters=17  inner_iters=17
+  K= 13  residual=0.013485  responsible=Qhat_nn(6,)  msa_iters=15  inner_iters=15
+  K= 14  residual=0.010225  responsible=Y_pk(0, 0)  msa_iters=15  inner_iters=15
+  K= 15  residual=0.037089  responsible=I_nn(6,)  msa_iters=15  inner_iters=15
+  K= 16  residual=0.041225  responsible=Qhat_nn(6,)  msa_iters=18  inner_iters=18
+  K= 17  residual=0.009819  responsible=Qhat_nn(6,)  msa_iters=15  inner_iters=15
+  K= 18  residual=0.008974  responsible=Y_pk(0, 0)  msa_iters=15  inner_iters=15
+  K= 19  residual=0.008819  responsible=Qhat_nn(6,)  msa_iters=15  inner_iters=15
+  K= 20  residual=0.024241  responsible=I_nn(6,)  msa_iters=12  inner_iters=12
+  K= 21  residual=0.024463  responsible=Qhat_nn(4,)  msa_iters=17  inner_iters=17
+  K= 22  residual=0.008069  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 23  residual=0.007879  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 24  residual=0.007700  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 25  residual=0.028558  responsible=I_nn(6,)  msa_iters=14  inner_iters=14
+  K= 26  residual=0.028415  responsible=Qhat_nn(6,)  msa_iters=18  inner_iters=18
+  K= 27  residual=0.007221  responsible=Y_pk(0, 0)  msa_iters=15  inner_iters=15
+  K= 28  residual=0.007078  responsible=Y_pk(0, 0)  msa_iters=15  inner_iters=15
+  K= 29  residual=0.006942  responsible=Y_pk(0, 0)  msa_iters=15  inner_iters=15
+  K= 30  residual=0.025817  responsible=I_nn(6,)  msa_iters=15  inner_iters=15
+  K= 31  residual=0.025128  responsible=Qhat_nn(6,)  msa_iters=18  inner_iters=18
+  K= 32  residual=0.006572  responsible=Y_pk(0, 0)  msa_iters=15  inner_iters=15
+  K= 33  residual=0.006460  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 34  residual=0.006354  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 35  residual=0.023942  responsible=I_nn(6,)  msa_iters=14  inner_iters=14
+  K= 36  residual=0.022754  responsible=Qhat_nn(6,)  msa_iters=18  inner_iters=18
+  K= 37  residual=0.006058  responsible=Y_pk(0, 0)  msa_iters=15  inner_iters=15
+  K= 38  residual=0.005968  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 39  residual=0.005881  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 40  residual=0.022388  responsible=I_nn(6,)  msa_iters=14  inner_iters=14
+  K= 41  residual=0.021315  responsible=Qhat_nn(6,)  msa_iters=17  inner_iters=17
+  K= 42  residual=0.005641  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K= 43  residual=0.005565  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 44  residual=0.005630  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K= 45  residual=0.015745  responsible=I_nn(6,)  msa_iters=14  inner_iters=14
+  K= 46  residual=0.014659  responsible=Qhat_nn(6,)  msa_iters=17  inner_iters=17
+  K= 47  residual=0.005290  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K= 48  residual=0.005226  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 49  residual=0.005165  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 50  residual=0.014945  responsible=I_nn(6,)  msa_iters=14  inner_iters=14
+  K= 51  residual=0.014046  responsible=Qhat_nn(6,)  msa_iters=17  inner_iters=17
+  K= 52  residual=0.004991  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K= 53  residual=0.006537  responsible=Qhat_nn(8,)  msa_iters=14  inner_iters=14
+  K= 54  residual=0.004884  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 55  residual=0.018983  responsible=I_nn(6,)  msa_iters=13  inner_iters=13
+  K= 56  residual=0.017427  responsible=Qhat_nn(6,)  msa_iters=17  inner_iters=17
+  K= 57  residual=0.004734  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K= 58  residual=0.004687  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K= 59  residual=0.004640  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 60  residual=0.004596  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 61  residual=0.005422  responsible=Qhat_nn(8,)  msa_iters=14  inner_iters=14
+  K= 62  residual=0.005454  responsible=Qhat_nn(8,)  msa_iters=14  inner_iters=14
+  K= 63  residual=0.004467  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K= 64  residual=0.004427  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 65  residual=0.013150  responsible=I_nn(6,)  msa_iters=13  inner_iters=13
+  K= 66  residual=0.011506  responsible=Qhat_nn(8,)  msa_iters=17  inner_iters=17
+  K= 67  residual=0.004309  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K= 68  residual=0.004273  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K= 69  residual=0.005576  responsible=Qhat_nn(7,)  msa_iters=14  inner_iters=14
+  K= 70  residual=0.012599  responsible=I_nn(6,)  msa_iters=13  inner_iters=13
+  K= 71  residual=0.010935  responsible=Qhat_nn(4,)  msa_iters=17  inner_iters=17
+  K= 72  residual=0.004131  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 73  residual=0.004098  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 74  residual=0.004065  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 75  residual=0.008155  responsible=I_nn(6,)  msa_iters=14  inner_iters=14
+  K= 76  residual=0.008462  responsible=Qhat_nn(8,)  msa_iters=15  inner_iters=15
+  K= 77  residual=0.004007  responsible=I_nn(6,)  msa_iters=13  inner_iters=13
+  K= 78  residual=0.003941  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 79  residual=0.003912  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 80  residual=0.004007  responsible=I_nn(6,)  msa_iters=13  inner_iters=13
+  K= 81  residual=0.003912  responsible=I_nn(6,)  msa_iters=12  inner_iters=12
+  K= 82  residual=0.003827  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 83  residual=0.003799  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 84  residual=0.003773  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 85  residual=0.003912  responsible=I_nn(6,)  msa_iters=11  inner_iters=11
+  K= 86  residual=0.003721  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 87  residual=0.003696  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 88  residual=0.003671  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 89  residual=0.003647  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K= 90  residual=0.003622  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 91  residual=0.003599  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 92  residual=0.003663  responsible=I_nn(8,)  msa_iters=11  inner_iters=11
+  K= 93  residual=0.003553  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K= 94  residual=0.003531  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 95  residual=0.003663  responsible=I_nn(8,)  msa_iters=13  inner_iters=13
+  K= 96  residual=0.003487  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 97  residual=0.003465  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 98  residual=0.003444  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K= 99  residual=0.003424  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=100  residual=0.003404  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=101  residual=0.003384  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=102  residual=0.003364  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=103  residual=0.003345  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=104  residual=0.003326  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=105  residual=0.003307  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=106  residual=0.003289  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=107  residual=0.003271  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=108  residual=0.003252  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=109  residual=0.003235  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=110  residual=0.003217  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=111  residual=0.003200  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=112  residual=0.003183  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=113  residual=0.003166  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=114  residual=0.003150  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=115  residual=0.003134  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=116  residual=0.003118  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=117  residual=0.003102  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=118  residual=0.003086  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=119  residual=0.003071  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=120  residual=0.003056  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=121  residual=0.003040  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=122  residual=0.003026  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=123  residual=0.003011  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=124  residual=0.002997  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=125  residual=0.002983  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=126  residual=0.002968  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=127  residual=0.002954  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=128  residual=0.002940  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=129  residual=0.002926  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=130  residual=0.002913  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=131  residual=0.002899  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=132  residual=0.002886  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=133  residual=0.002873  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=134  residual=0.002860  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=135  residual=0.002847  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=136  residual=0.002835  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=137  residual=0.002822  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=138  residual=0.002810  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=139  residual=0.002798  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=140  residual=0.002786  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=141  residual=0.002774  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=142  residual=0.002763  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=143  residual=0.002751  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=144  residual=0.002739  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=145  residual=0.002728  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=146  residual=0.002717  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=147  residual=0.002706  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=148  residual=0.002695  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=149  residual=0.002684  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=150  residual=0.002673  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=151  residual=0.002663  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=152  residual=0.002652  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=153  residual=0.002642  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=154  residual=0.002632  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=155  residual=0.002621  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=156  residual=0.002611  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=157  residual=0.002601  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=158  residual=0.002592  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=159  residual=0.002582  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=160  residual=0.002572  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=161  residual=0.002562  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=162  residual=0.002553  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=163  residual=0.002544  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=164  residual=0.002535  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=165  residual=0.002525  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=166  residual=0.002516  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=167  residual=0.002507  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=168  residual=0.002498  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=169  residual=0.002490  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=170  residual=0.002481  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=171  residual=0.002472  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=172  residual=0.002464  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=173  residual=0.002455  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=174  residual=0.002447  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=175  residual=0.002439  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=176  residual=0.002431  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=177  residual=0.002422  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=178  residual=0.002414  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=179  residual=0.002406  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=180  residual=0.002398  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=181  residual=0.002390  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=182  residual=0.002383  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=183  residual=0.002375  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=184  residual=0.002368  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=185  residual=0.002360  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=186  residual=0.002353  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=187  residual=0.002345  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=188  residual=0.002338  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=189  residual=0.002330  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=190  residual=0.002323  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=191  residual=0.002316  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=192  residual=0.002309  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=193  residual=0.002302  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=194  residual=0.002295  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=195  residual=0.002288  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=196  residual=0.002281  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=197  residual=0.002274  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=198  residual=0.002270  responsible=Qhat_nn(1,)  msa_iters=14  inner_iters=14
+  K=199  residual=0.002261  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=200  residual=0.002255  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=201  residual=0.002248  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=202  residual=0.002241  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=203  residual=0.002235  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=204  residual=0.002228  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=205  residual=0.002222  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=206  residual=0.002221  responsible=Qhat_nn(1,)  msa_iters=14  inner_iters=14
+  K=207  residual=0.002210  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=208  residual=0.002204  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=209  residual=0.002197  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=210  residual=0.002191  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=211  residual=0.002185  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=212  residual=0.002179  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=213  residual=0.002173  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=214  residual=0.002167  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=215  residual=0.002162  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=216  residual=0.002195  responsible=Qhat_nn(1,)  msa_iters=14  inner_iters=14
+  K=217  residual=0.002150  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=218  residual=0.002145  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=219  residual=0.002139  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=220  residual=0.002133  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=221  residual=0.002128  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=222  residual=0.002122  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=223  residual=0.002117  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=224  residual=0.002111  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=225  residual=0.002106  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=226  residual=0.002101  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=227  residual=0.002095  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=228  residual=0.002090  responsible=Y_pk(0, 0)  msa_iters=16  inner_iters=16
+  K=229  residual=0.002085  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=230  residual=0.002184  responsible=Qhat_nn(1,)  msa_iters=14  inner_iters=14
+  K=231  residual=0.002074  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=232  residual=0.002069  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=233  residual=0.002064  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=234  residual=0.002059  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=235  residual=0.002054  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=236  residual=0.002049  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=237  residual=0.002044  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=238  residual=0.002040  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=239  residual=0.002035  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=240  residual=0.002030  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=241  residual=0.002025  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=242  residual=0.002020  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=243  residual=0.002015  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=244  residual=0.002011  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=245  residual=0.002006  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=246  residual=0.002002  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=247  residual=0.001997  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=248  residual=0.001993  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=249  residual=0.001988  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=250  residual=0.001984  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=251  residual=0.001979  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=252  residual=0.001975  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=253  residual=0.001970  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=254  residual=0.001966  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=255  residual=0.001962  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=256  residual=0.001958  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=257  residual=0.001953  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=258  residual=0.001949  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=259  residual=0.001945  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=260  residual=0.001941  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=261  residual=0.001936  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=262  residual=0.001932  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=263  residual=0.001928  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=264  residual=0.001924  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=265  residual=0.001920  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=266  residual=0.001916  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=267  residual=0.001912  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=268  residual=0.001908  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=269  residual=0.001904  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=270  residual=0.001901  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=271  residual=0.001897  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=272  residual=0.001893  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=273  residual=0.001889  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=274  residual=0.001885  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=275  residual=0.001881  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=276  residual=0.001878  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=277  residual=0.001874  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=278  residual=0.001870  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=279  residual=0.001867  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=280  residual=0.001863  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=281  residual=0.001859  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=282  residual=0.001856  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=283  residual=0.001852  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=284  residual=0.001849  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=285  residual=0.001845  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=286  residual=0.001842  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=287  residual=0.001838  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=288  residual=0.001835  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=289  residual=0.001831  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=290  residual=0.001828  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=291  residual=0.001988  responsible=Qhat_nn(7,)  msa_iters=14  inner_iters=14
+  K=292  residual=0.001821  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=293  residual=0.001818  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=294  residual=0.001814  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=295  residual=0.001811  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=296  residual=0.001808  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=297  residual=0.001805  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=298  residual=0.001801  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=299  residual=0.001798  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=300  residual=0.001795  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=301  residual=0.001791  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=302  residual=0.001817  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=303  residual=0.001785  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=304  residual=0.001782  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=305  residual=0.001933  responsible=Qhat_nn(8,)  msa_iters=14  inner_iters=14
+  K=306  residual=0.001776  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=307  residual=0.001773  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=308  residual=0.001770  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=309  residual=0.001910  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=310  residual=0.001764  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=311  residual=0.001761  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=312  residual=0.001758  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=313  residual=0.001755  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=314  residual=0.001752  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=315  residual=0.001749  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=316  residual=0.001746  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=317  residual=0.001743  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=318  residual=0.001740  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=319  residual=0.001737  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=320  residual=0.001734  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=321  residual=0.001731  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=322  residual=0.001728  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=323  residual=0.001726  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=324  residual=0.001723  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=325  residual=0.001720  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=326  residual=0.001717  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=327  residual=0.001714  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=328  residual=0.001712  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=329  residual=0.001709  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=330  residual=0.001706  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=331  residual=0.001704  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=332  residual=0.001701  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=333  residual=0.001698  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=334  residual=0.001696  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=335  residual=0.001693  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=336  residual=0.001690  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=337  residual=0.001688  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=338  residual=0.001685  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=339  residual=0.001804  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=340  residual=0.001680  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=341  residual=0.001677  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=342  residual=0.001675  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=343  residual=0.001672  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=344  residual=0.001670  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=345  residual=0.001744  responsible=Qhat_nn(1,)  msa_iters=13  inner_iters=13
+  K=346  residual=0.001665  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=347  residual=0.001662  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=348  residual=0.001660  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=349  residual=0.001657  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=350  residual=0.001655  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=351  residual=0.001786  responsible=Qhat_nn(1,)  msa_iters=13  inner_iters=13
+  K=352  residual=0.001650  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=353  residual=0.001648  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=354  residual=0.001645  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=355  residual=0.001643  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=356  residual=0.001640  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=357  residual=0.001894  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=358  residual=0.001636  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=359  residual=0.001749  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=360  residual=0.001631  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=361  residual=0.001629  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=362  residual=0.001626  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=363  residual=0.001624  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=364  residual=0.001622  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=365  residual=0.001620  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=366  residual=0.001617  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=367  residual=0.001615  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=368  residual=0.001613  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=369  residual=0.001611  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=370  residual=0.001609  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=371  residual=0.002014  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=372  residual=0.001604  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=373  residual=0.001602  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=374  residual=0.001600  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=375  residual=0.001598  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=376  residual=0.001774  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=377  residual=0.002506  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=378  residual=0.001704  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=379  residual=0.001708  responsible=Qhat_nn(8,)  msa_iters=14  inner_iters=14
+  K=380  residual=0.001587  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=381  residual=0.001585  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=382  residual=0.001743  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=383  residual=0.001581  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=384  residual=0.001579  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=385  residual=0.001577  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=386  residual=0.001575  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=387  residual=0.001573  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=388  residual=0.001571  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=389  residual=0.001569  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=390  residual=0.001567  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=391  residual=0.001594  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=392  residual=0.002154  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=393  residual=0.001561  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=394  residual=0.001662  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=395  residual=0.001557  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=396  residual=0.001555  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=397  residual=0.001830  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=398  residual=0.002617  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=399  residual=0.001699  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=400  residual=0.001747  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=401  residual=0.001545  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=402  residual=0.001544  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=403  residual=0.002067  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=404  residual=0.003179  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=405  residual=0.001538  responsible=Y_pk(0, 0)  msa_iters=14  inner_iters=14
+  K=406  residual=0.001747  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=407  residual=0.001534  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=408  residual=0.001533  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=409  residual=0.001531  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=410  residual=0.001529  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=411  residual=0.001527  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=412  residual=0.001525  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=413  residual=0.001523  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=414  residual=0.001522  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=415  residual=0.001520  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=416  residual=0.001518  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=417  residual=0.001516  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=418  residual=0.001534  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=419  residual=0.001870  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=420  residual=0.001511  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=421  residual=0.001509  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=422  residual=0.001508  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=423  residual=0.001506  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=424  residual=0.001504  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=425  residual=0.002065  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=426  residual=0.002549  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=427  residual=0.001534  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=428  residual=0.001498  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=429  residual=0.001705  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=430  residual=0.001494  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=431  residual=0.001493  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=432  residual=0.001491  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=433  residual=0.001489  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=434  residual=0.001488  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=435  residual=0.001486  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=436  residual=0.001484  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=437  residual=0.001483  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=438  residual=0.001481  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=439  residual=0.001480  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=440  residual=0.001478  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=441  residual=0.001477  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=442  residual=0.001475  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=443  residual=0.001473  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=444  residual=0.001472  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=445  residual=0.001470  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=446  residual=0.001556  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=447  residual=0.001677  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=448  residual=0.001502  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=449  residual=0.001464  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=450  residual=0.001463  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=451  residual=0.001644  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=452  residual=0.001460  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=453  residual=0.001458  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=454  residual=0.001531  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=455  residual=0.001455  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=456  residual=0.001454  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=457  residual=0.001452  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=458  residual=0.001451  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=459  residual=0.001449  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=460  residual=0.001448  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=461  residual=0.001447  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=462  residual=0.001445  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=463  residual=0.001444  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=464  residual=0.001442  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=465  residual=0.001861  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=466  residual=0.001439  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=467  residual=0.001438  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=468  residual=0.001437  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=469  residual=0.001730  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=470  residual=0.001434  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=471  residual=0.001432  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=472  residual=0.001431  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=473  residual=0.001430  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=474  residual=0.001428  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=475  residual=0.001427  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=476  residual=0.001426  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=477  residual=0.001424  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=478  residual=0.001423  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=479  residual=0.001422  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=480  residual=0.001420  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=481  residual=0.001419  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=482  residual=0.001418  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=483  residual=0.001416  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=484  residual=0.001415  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=485  residual=0.001414  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=486  residual=0.001412  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=487  residual=0.001411  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=488  residual=0.001410  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=489  residual=0.001409  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=490  residual=0.001553  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=491  residual=0.002045  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=492  residual=0.001405  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=493  residual=0.001439  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=494  residual=0.001402  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=495  residual=0.001803  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=496  residual=0.001400  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=497  residual=0.001399  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=498  residual=0.001397  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=499  residual=0.001396  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=500  residual=0.001829  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=501  residual=0.002543  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=502  residual=0.001515  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=503  residual=0.001551  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=504  residual=0.001390  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=505  residual=0.001389  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=506  residual=0.001388  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=507  residual=0.001808  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=508  residual=0.001723  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=509  residual=0.001384  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=510  residual=0.001383  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=511  residual=0.001382  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=512  residual=0.001381  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=513  residual=0.002086  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=514  residual=0.001537  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=515  residual=0.001670  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=516  residual=0.001376  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=517  residual=0.001375  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=518  residual=0.001474  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=519  residual=0.002092  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=520  residual=0.001372  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=521  residual=0.001370  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=522  residual=0.001369  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=523  residual=0.001473  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=524  residual=0.001367  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=525  residual=0.001366  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=526  residual=0.001365  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=527  residual=0.001376  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=528  residual=0.001363  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=529  residual=0.001362  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=530  residual=0.001361  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=531  residual=0.001359  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=532  residual=0.001358  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=533  residual=0.001357  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=534  residual=0.001583  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=535  residual=0.001355  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=536  residual=0.001354  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=537  residual=0.001455  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=538  residual=0.001352  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=539  residual=0.001351  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=540  residual=0.001350  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=541  residual=0.001349  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=542  residual=0.001348  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=543  residual=0.001347  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=544  residual=0.001346  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=545  residual=0.001494  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=546  residual=0.001699  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=547  residual=0.001343  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=548  residual=0.001342  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=549  residual=0.001341  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=550  residual=0.001340  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=551  residual=0.001867  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=552  residual=0.002059  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=553  residual=0.001569  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=554  residual=0.001336  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=555  residual=0.001335  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=556  residual=0.001334  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=557  residual=0.001333  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=558  residual=0.001657  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=559  residual=0.001331  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=560  residual=0.001330  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=561  residual=0.001329  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=562  residual=0.001328  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=563  residual=0.001327  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=564  residual=0.001370  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=565  residual=0.001969  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=566  residual=0.001324  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=567  residual=0.001323  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=568  residual=0.001327  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=569  residual=0.001321  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=570  residual=0.001655  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=571  residual=0.001319  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=572  residual=0.001476  responsible=Qhat_nn(8,)  msa_iters=8  inner_iters=8
+  K=573  residual=0.001317  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=574  residual=0.001316  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=575  residual=0.001316  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=576  residual=0.001315  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=577  residual=0.001314  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=578  residual=0.001313  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=579  residual=0.001312  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=580  residual=0.001311  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=581  residual=0.001310  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=582  residual=0.001414  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=583  residual=0.001309  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=584  residual=0.001581  responsible=Qhat_nn(8,)  msa_iters=8  inner_iters=8
+  K=585  residual=0.001307  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=586  residual=0.001306  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=587  residual=0.001305  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=588  residual=0.001304  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=589  residual=0.001303  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=590  residual=0.001302  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=591  residual=0.001302  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=592  residual=0.001301  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=593  residual=0.001446  responsible=Qhat_nn(8,)  msa_iters=8  inner_iters=8
+  K=594  residual=0.001299  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=595  residual=0.001298  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=596  residual=0.001297  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=597  residual=0.001296  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=598  residual=0.001296  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=599  residual=0.001295  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=600  residual=0.001294  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=601  residual=0.001293  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=602  residual=0.001292  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=603  residual=0.001292  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=604  residual=0.001423  responsible=Qhat_nn(8,)  msa_iters=8  inner_iters=8
+  K=605  residual=0.001290  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=606  residual=0.001289  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=607  residual=0.001288  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=608  residual=0.001633  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=609  residual=0.001287  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=610  residual=0.001286  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=611  residual=0.001285  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=612  residual=0.001284  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=613  residual=0.001283  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=614  residual=0.001283  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=615  residual=0.001282  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=616  residual=0.001281  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=617  residual=0.001280  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=618  residual=0.001280  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=619  residual=0.001279  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=620  residual=0.001278  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=621  residual=0.001277  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=622  residual=0.001276  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=623  residual=0.001276  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=624  residual=0.001275  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=625  residual=0.001274  responsible=Y_pk(0, 0)  msa_iters=8  inner_iters=8
+  K=626  residual=0.001273  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=627  residual=0.001273  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=628  residual=0.001272  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=629  residual=0.001271  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=630  residual=0.001270  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=631  residual=0.001270  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=632  residual=0.001269  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=633  residual=0.001268  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=634  residual=0.001869  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=635  residual=0.001405  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=636  residual=0.001266  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=637  residual=0.001442  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=638  residual=0.001265  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=639  residual=0.001448  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=640  residual=0.001263  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=641  residual=0.001262  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=642  residual=0.001262  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=643  residual=0.001503  responsible=Qhat_nn(8,)  msa_iters=8  inner_iters=8
+  K=644  residual=0.001707  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=645  residual=0.001346  responsible=Qhat_nn(8,)  msa_iters=8  inner_iters=8
+  K=646  residual=0.001259  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=647  residual=0.001258  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=648  residual=0.001257  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=649  residual=0.001257  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=650  residual=0.001256  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=651  residual=0.001400  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=652  residual=0.001254  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=653  residual=0.001254  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=654  residual=0.001253  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=655  residual=0.001253  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=656  residual=0.001831  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=657  residual=0.001251  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=658  residual=0.001251  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=659  residual=0.001901  responsible=Qhat_nn(2,)  msa_iters=14  inner_iters=14
+  K=660  residual=0.001249  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=661  residual=0.001249  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=662  residual=0.002031  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=663  residual=0.001247  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=664  residual=0.001664  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=665  residual=0.001246  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=666  residual=0.001549  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=667  residual=0.001245  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=668  residual=0.001244  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=669  residual=0.001244  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=670  residual=0.001243  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=671  residual=0.001851  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=672  residual=0.001242  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=673  residual=0.001758  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=674  residual=0.001240  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=675  residual=0.001740  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=676  residual=0.001239  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=677  residual=0.001238  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=678  residual=0.001238  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=679  residual=0.001237  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=680  residual=0.001237  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=681  residual=0.001236  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=682  residual=0.001235  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=683  residual=0.001803  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=684  residual=0.001234  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=685  residual=0.001234  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=686  residual=0.001233  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=687  residual=0.001643  responsible=Qhat_nn(8,)  msa_iters=8  inner_iters=8
+  K=688  residual=0.001232  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=689  residual=0.001231  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=690  residual=0.001231  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=691  residual=0.001230  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=692  residual=0.001289  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=693  residual=0.001229  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=694  residual=0.001342  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=695  residual=0.001227  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=696  residual=0.001467  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=697  residual=0.001226  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=698  residual=0.001226  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=699  residual=0.001225  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=700  residual=0.001225  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=701  residual=0.001815  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=702  residual=0.001223  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=703  residual=0.001634  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=704  residual=0.001222  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=705  residual=0.001560  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=706  residual=0.001221  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=707  residual=0.001221  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=708  residual=0.001220  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=709  residual=0.001220  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=710  residual=0.001723  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=711  residual=0.001218  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=712  residual=0.001502  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=713  residual=0.001217  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=714  residual=0.001431  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=715  residual=0.001216  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=716  residual=0.001216  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=717  residual=0.001358  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=718  residual=0.001215  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=719  residual=0.001714  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=720  residual=0.001213  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=721  residual=0.001213  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=722  residual=0.001212  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=723  residual=0.001686  responsible=Qhat_nn(7,)  msa_iters=9  inner_iters=9
+  K=724  residual=0.001211  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=725  residual=0.001211  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=726  residual=0.001210  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=727  residual=0.001629  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=728  residual=0.001209  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=729  residual=0.001231  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=730  residual=0.001208  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=731  residual=0.001208  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=732  residual=0.001207  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=733  residual=0.001207  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=734  residual=0.001206  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=735  residual=0.001400  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=736  residual=0.001205  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=737  residual=0.001523  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=738  residual=0.001204  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=739  residual=0.001203  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=740  residual=0.001203  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=741  residual=0.001202  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=742  residual=0.001660  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=743  residual=0.001201  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=744  residual=0.001356  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=745  residual=0.001201  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=746  residual=0.001258  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=747  residual=0.001199  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=748  residual=0.001256  responsible=Qhat_nn(1,)  msa_iters=13  inner_iters=13
+  K=749  residual=0.001198  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=750  residual=0.001524  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=751  residual=0.001198  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=752  residual=0.001598  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=753  residual=0.001197  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=754  residual=0.001196  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=755  residual=0.001196  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=756  residual=0.001195  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=757  residual=0.001640  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=758  residual=0.001194  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=759  residual=0.001295  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=760  residual=0.001193  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=761  residual=0.001193  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=762  residual=0.001192  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=763  residual=0.001192  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=764  residual=0.001191  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=765  residual=0.001325  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=766  residual=0.001190  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=767  residual=0.001390  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=768  residual=0.001190  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=769  residual=0.001189  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=770  residual=0.001530  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=771  residual=0.001188  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=772  residual=0.001188  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=773  residual=0.001187  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=774  residual=0.001717  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=775  residual=0.001186  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=776  residual=0.001186  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=777  residual=0.001185  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=778  residual=0.001676  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=779  residual=0.001184  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=780  residual=0.001190  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=781  residual=0.001184  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=782  residual=0.001183  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=783  residual=0.001183  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=784  residual=0.001182  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=785  residual=0.001187  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=786  residual=0.001181  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=787  residual=0.001384  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=788  residual=0.001181  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=789  residual=0.001589  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=790  residual=0.001180  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=791  residual=0.001179  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=792  residual=0.001179  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=793  residual=0.001187  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=794  residual=0.001178  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=795  residual=0.001254  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=796  residual=0.001177  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=797  residual=0.001335  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=798  residual=0.001176  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=799  residual=0.001176  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=800  residual=0.001175  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=801  residual=0.001175  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=802  residual=0.001367  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=803  residual=0.001174  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=804  residual=0.001496  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=805  residual=0.001173  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=806  residual=0.001173  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=807  residual=0.001373  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=808  residual=0.001172  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=809  residual=0.001547  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=810  residual=0.001171  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=811  residual=0.001171  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=812  residual=0.001455  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=813  residual=0.001170  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=814  residual=0.001616  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=815  residual=0.001169  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=816  residual=0.001169  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=817  residual=0.001514  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=818  residual=0.001168  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=819  residual=0.001656  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=820  residual=0.001167  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=821  residual=0.001167  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=822  residual=0.001167  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=823  residual=0.001166  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=824  residual=0.001439  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=825  residual=0.001166  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=826  residual=0.001165  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=827  residual=0.001165  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=828  residual=0.001429  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=829  residual=0.001164  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=830  residual=0.001164  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=831  residual=0.001163  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=832  residual=0.001164  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=833  residual=0.001162  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=834  residual=0.001162  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=835  residual=0.001205  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=836  residual=0.001161  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=837  residual=0.001306  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=838  residual=0.001160  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=839  residual=0.001419  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=840  residual=0.001160  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=841  residual=0.001159  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=842  residual=0.001407  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=843  residual=0.001159  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=844  residual=0.001158  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=845  residual=0.001491  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=846  residual=0.001158  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=847  residual=0.001610  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=848  residual=0.001157  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=849  residual=0.001156  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=850  residual=0.001377  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=851  residual=0.001156  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=852  residual=0.001453  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=853  residual=0.001155  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=854  residual=0.001496  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=855  residual=0.001154  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=856  residual=0.001375  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=857  residual=0.001154  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=858  residual=0.001167  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=859  residual=0.001153  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=860  residual=0.001153  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=861  residual=0.001152  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=862  residual=0.001510  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=863  residual=0.001151  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=864  residual=0.001151  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=865  residual=0.001151  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=866  residual=0.001329  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=867  residual=0.001150  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=868  residual=0.001150  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=869  residual=0.001425  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=870  residual=0.001149  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=871  residual=0.001503  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=872  residual=0.001148  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=873  residual=0.001522  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=874  residual=0.001148  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=875  residual=0.001374  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=876  residual=0.001147  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=877  residual=0.001147  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=878  residual=0.001146  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=879  residual=0.001146  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=880  residual=0.001146  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=881  residual=0.001383  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=882  residual=0.001145  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=883  residual=0.001145  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=884  residual=0.001389  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=885  residual=0.001144  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=886  residual=0.001846  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=887  residual=0.001143  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=888  residual=0.001143  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=889  residual=0.001143  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=890  residual=0.001143  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=891  residual=0.001409  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=892  residual=0.001142  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=893  residual=0.001142  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=894  residual=0.001486  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=895  residual=0.001141  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=896  residual=0.001496  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=897  residual=0.001141  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=898  residual=0.001435  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=899  residual=0.001140  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=900  residual=0.001140  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=901  residual=0.001139  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=902  residual=0.001139  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=903  residual=0.001139  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=904  residual=0.001138  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=905  residual=0.001644  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=906  residual=0.001138  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=907  residual=0.001137  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=908  residual=0.001137  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=909  residual=0.001412  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=910  residual=0.001137  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=911  residual=0.001136  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=912  residual=0.001382  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=913  residual=0.001136  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=914  residual=0.001367  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=915  residual=0.001135  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=916  residual=0.001239  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=917  residual=0.001134  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=918  residual=0.001134  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=919  residual=0.001134  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=920  residual=0.001563  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=921  residual=0.001133  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=922  residual=0.001314  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=923  residual=0.001133  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=924  residual=0.001133  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=925  residual=0.001703  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=926  residual=0.001132  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=927  residual=0.001132  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=928  residual=0.001131  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=929  residual=0.001131  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=930  residual=0.001131  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=931  residual=0.001318  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=932  residual=0.001130  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=933  residual=0.001334  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=934  residual=0.001130  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=935  residual=0.001394  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=936  residual=0.001129  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=937  residual=0.001168  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=938  residual=0.001129  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=939  residual=0.001129  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=940  residual=0.001128  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=941  residual=0.001433  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=942  residual=0.001127  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=943  residual=0.001200  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=944  residual=0.001127  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=945  residual=0.001678  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=946  residual=0.001126  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=947  residual=0.001126  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=948  residual=0.001126  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=949  residual=0.001126  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=950  residual=0.001125  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=951  residual=0.001303  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=952  residual=0.001125  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=953  residual=0.001286  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=954  residual=0.001124  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=955  residual=0.001376  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=956  residual=0.001124  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=957  residual=0.001199  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=958  residual=0.001123  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=959  residual=0.001123  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=960  residual=0.001123  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=961  residual=0.001497  responsible=Qhat_nn(2,)  msa_iters=13  inner_iters=13
+  K=962  residual=0.001122  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=963  residual=0.001160  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=964  residual=0.001122  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=965  residual=0.001512  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=966  residual=0.001121  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=967  residual=0.001144  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=968  residual=0.001121  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=969  residual=0.001470  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=970  residual=0.001120  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=971  residual=0.001425  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=972  residual=0.001744  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=973  residual=0.001683  responsible=Qhat_nn(8,)  msa_iters=8  inner_iters=8
+  K=974  residual=0.001119  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=975  residual=0.001119  responsible=Y_pk(0, 0)  msa_iters=12  inner_iters=12
+  K=976  residual=0.001366  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=977  residual=0.001432  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=978  residual=0.001118  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=979  residual=0.001362  responsible=Qhat_nn(8,)  msa_iters=9  inner_iters=9
+  K=980  residual=0.001117  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=981  residual=0.001117  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=982  residual=0.001117  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+  K=983  residual=0.001132  responsible=Qhat_nn(8,)  msa_iters=10  inner_iters=10
+  K=984  residual=0.001900  responsible=Qhat_nn(8,)  msa_iters=13  inner_iters=13
+  K=985  residual=0.001118  responsible=Qhat_nn(8,)  msa_iters=8  inner_iters=8
+  K=986  residual=0.001149  responsible=Qhat_nn(7,)  msa_iters=10  inner_iters=10
+  K=987  residual=0.001116  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=988  residual=0.001387  responsible=Qhat_nn(1,)  msa_iters=13  inner_iters=13
+  K=989  residual=0.001115  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=990  residual=0.001339  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=991  residual=0.001115  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=992  residual=0.001114  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=993  residual=0.001114  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=994  residual=0.001114  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=995  residual=0.001433  responsible=Qhat_nn(1,)  msa_iters=13  inner_iters=13
+  K=996  residual=0.001114  responsible=Y_pk(0, 0)  msa_iters=11  inner_iters=11
+  K=997  residual=0.001286  responsible=Qhat_nn(7,)  msa_iters=13  inner_iters=13
+  K=998  residual=0.001113  responsible=Y_pk(0, 0)  msa_iters=9  inner_iters=9
+  K=999  residual=0.001113  responsible=Y_pk(0, 0)  msa_iters=13  inner_iters=13
+  K=1000  residual=0.001113  responsible=Y_pk(0, 0)  msa_iters=10  inner_iters=10
+
+Final state -- all decision variables:
+  h_ijsb (shape (2, 3, 3, 1)):
+[[[[0.6817]
+   [0.6731]
+   [0.673 ]]
+
+  [[0.8162]
+   [0.6826]
+   [0.8167]]
+
+  [[0.8166]
+   [0.6722]
+   [0.682 ]]]
+
+
+ [[[0.6822]
+   [0.6735]
+   [0.6735]]
+
+  [[0.8166]
+   [0.6831]
+   [0.8171]]
+
+  [[0.817 ]
+   [0.6727]
+   [0.6824]]]]
+  l_tilde_res (shape (3, 1)):
+[[0.4004]
+ [0.4002]
+ [0.4004]]
+  l_tilde_nonres (shape (3, 1)):
+[[0.401 ]
+ [0.4009]
+ [0.401 ]]
+  l_tilde_park (shape (3, 1)):
+[[0.4001]
+ [0.3999]
+ [0.4001]]
+  Y_js (shape (2, 3)):
+[[151.3522 151.3509 151.3523]
+ [151.7984 151.7984 151.7984]]
+  Q_ij_s (shape (2, 3, 3)):
+[[[0. 0. 0.]
+  [0. 0. 0.]
+  [0. 0. 0.]]
+
+ [[0. 0. 0.]
+  [0. 0. 0.]
+  [0. 0. 0.]]]
+  Qtilde_ij_s (shape (2, 3, 3)):
+[[[0. 0. 0.]
+  [0. 0. 0.]
+  [0. 0. 0.]]
+
+ [[0. 0. 0.]
+  [0. 0. 0.]
+  [0. 0. 0.]]]
+  q0_js (shape (2, 3)):
+[[0. 0. 0.]
+ [0. 0. 0.]]
+  h0_js (shape (2, 3)):
+[[0.     0.004  0.0044]
+ [0.     0.004  0.0044]]
+  Q_i0 (shape (2, 3)):
+[[0.0635 0.0642 0.0636]
+ [0.     0.     0.    ]]
+  Q_0i (shape (2, 3)):
+[[0.     0.     0.    ]
+ [0.4139 0.4139 0.4139]]
+  l_tilde_infra (shape (3,)):
+[0.4146 0.4144 0.4096]
+  lambda0: 0
+  w0: 0
+  rho_js (shape (2, 3)):
+[[1.0373 1.036  1.0373]
+ [1.0378 1.0365 1.0378]]
+  r_tilde (shape (3,)):
+[0.0001 0.001  0.    ]
+  r_bar_res (shape (3, 1)):
+[[1.0194]
+ [1.0194]
+ [1.0194]]
+  r_bar_nonres (shape (3, 1)):
+[[1.0256]
+ [1.0256]
+ [1.0256]]
+  r_bar_park (shape (3, 1)):
+[[1.0169]
+ [1.0169]
+ [1.0169]]
+  r_res (shape (3, 1)):
+[[1.8708]
+ [1.8799]
+ [1.8699]]
+  r_nonres (shape (3, 1)):
+[[4.7626]
+ [4.7626]
+ [4.7626]]
+  r_park (shape (3, 1)):
+[[1.]
+ [1.]
+ [1.]]
+  r_infra (shape (3,)):
+[1.0805 1.0804 1.0584]
+  pi_js (shape (2, 3)):
+[[7.2011 7.2012 7.2011]
+ [7.2085 7.2087 7.2086]]
+  pi_jp (shape (3, 1)):
+[[1.8658]
+ [1.8774]
+ [1.8698]]
+  pi_nn_m (shape (1, 12)):
+[[1.0017 1.0017 1.0017 1.0017 1.0017 1.0017 1.0288 1.0288 1.0289 1.0288
+  1.0017 1.0017]]
+  w_js (shape (2, 3)):
+[[3.7775 3.7777 3.7785]
+ [3.7809 3.7811 3.7819]]
+  w_m (shape (1,)):
+[1.7835]
+  p_sT (shape (2, 3)):
+[[1.5556 1.5587 1.556 ]
+ [0.     0.     0.    ]]
+  p_sN (shape (2, 3)):
+[[0. 0. 0.]
+ [0. 0. 0.]]
+  theta0: 1.00877
+  lambda_stat_mn (shape (1, 4)):
+[[0.0048 0.1022 0.0048 0.    ]]
+  q_bar_s (shape (2,)):
+[149.7634 150.2366]
+  q_ijs (shape (2, 3, 3)):
+[[[49.0463  0.4407  0.2147]
+  [ 0.5421 49.1901  0.5449]
+  [ 0.2697  0.4373 49.0776]]
+
+ [[49.2016  0.4417  0.2152]
+  [ 0.5436 49.3465  0.5463]
+  [ 0.2704  0.4383 49.2331]]]
+  q_ijsb (shape (2, 3, 3, 1)):
+[[[[49.0463]
+   [ 0.4407]
+   [ 0.2147]]
+
+  [[ 0.5421]
+   [49.1901]
+   [ 0.5449]]
+
+  [[ 0.2697]
+   [ 0.4373]
+   [49.0776]]]
+
+
+ [[[49.2016]
+   [ 0.4417]
+   [ 0.2152]]
+
+  [[ 0.5436]
+   [49.3465]
+   [ 0.5463]]
+
+  [[ 0.2704]
+   [ 0.4383]
+   [49.2331]]]]
+  q_ijsb_sk (shape (2, 3, 3, 1, 3, 2)):
+[[[[[[2.40679e+01 2.40673e+01]
+     [3.00600e-01 3.01000e-01]
+     [1.54700e-01 1.54800e-01]]]
+
+
+   [[[2.16200e-01 2.16200e-01]
+     [2.70000e-03 2.70000e-03]
+     [1.40000e-03 1.40000e-03]]]
+
+
+   [[[1.05400e-01 1.05400e-01]
+     [1.30000e-03 1.30000e-03]
+     [7.00000e-04 7.00000e-04]]]]
+
+
+
+  [[[[2.70000e-03 2.70000e-03]
+     [2.65600e-01 2.65600e-01]
+     [2.70000e-03 2.70000e-03]]]
+
+
+   [[[2.47300e-01 2.47100e-01]
+     [2.40999e+01 2.41001e+01]
+     [2.47900e-01 2.47800e-01]]]
+
+
+   [[[2.70000e-03 2.70000e-03]
+     [2.67000e-01 2.67000e-01]
+     [2.70000e-03 2.70000e-03]]]]
+
+
+
+  [[[[7.00000e-04 7.00000e-04]
+     [1.60000e-03 1.60000e-03]
+     [1.32500e-01 1.32500e-01]]]
+
+
+   [[[1.20000e-03 1.20000e-03]
+     [2.60000e-03 2.60000e-03]
+     [2.14900e-01 2.14900e-01]]]
+
+
+   [[[1.29300e-01 1.29100e-01]
+     [2.94000e-01 2.94200e-01]
+     [2.41155e+01 2.41155e+01]]]]]
+
+
+
+
+ [[[[[2.41445e+01 2.41440e+01]
+     [3.01300e-01 3.01700e-01]
+     [1.55000e-01 1.55200e-01]]]
+
+
+   [[[2.16700e-01 2.16700e-01]
+     [2.70000e-03 2.70000e-03]
+     [1.40000e-03 1.40000e-03]]]
+
+
+   [[[1.05600e-01 1.05600e-01]
+     [1.30000e-03 1.30000e-03]
+     [7.00000e-04 7.00000e-04]]]]
+
+
+
+  [[[[2.70000e-03 2.70000e-03]
+     [2.66300e-01 2.66300e-01]
+     [2.70000e-03 2.70000e-03]]]
+
+
+   [[[2.47900e-01 2.47700e-01]
+     [2.41770e+01 2.41772e+01]
+     [2.48400e-01 2.48400e-01]]]
+
+
+   [[[2.70000e-03 2.70000e-03]
+     [2.67700e-01 2.67700e-01]
+     [2.70000e-03 2.70000e-03]]]]
+
+
+
+  [[[[7.00000e-04 7.00000e-04]
+     [1.60000e-03 1.60000e-03]
+     [1.32900e-01 1.32900e-01]]]
+
+
+   [[[1.20000e-03 1.20000e-03]
+     [2.60000e-03 2.60000e-03]
+     [2.15400e-01 2.15400e-01]]]
+
+
+   [[[1.29600e-01 1.29400e-01]
+     [2.94700e-01 2.94800e-01]
+     [2.41923e+01 2.41923e+01]]]]]]
+  c_ijsb_s (shape (2, 3, 3, 1, 2)):
+[[[[[0.1929 0.    ]]
+
+   [[0.1929 0.    ]]
+
+   [[0.1929 0.    ]]]
+
+
+  [[[0.1925 0.    ]]
+
+   [[0.1925 0.    ]]
+
+   [[0.1925 0.    ]]]
+
+
+  [[[0.1928 0.    ]]
+
+   [[0.1928 0.    ]]
+
+   [[0.1928 0.    ]]]]
+
+
+
+ [[[[0.1929 0.    ]]
+
+   [[0.1929 0.    ]]
+
+   [[0.1929 0.    ]]]
+
+
+  [[[0.1925 0.    ]]
+
+   [[0.1925 0.    ]]
+
+   [[0.1925 0.    ]]]
+
+
+  [[[0.1928 0.    ]]
+
+   [[0.1928 0.    ]]
+
+   [[0.1928 0.    ]]]]]
+  d_ijsb_sk (shape (2, 3, 3, 1, 3, 2)):
+[[[[[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]]
+
+
+
+  [[[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]]
+
+
+
+  [[[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]]]
+
+
+
+
+ [[[[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]]
+
+
+
+  [[[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]]
+
+
+
+  [[[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]
+
+
+   [[[0.3214 0.    ]
+     [0.3208 0.    ]
+     [0.3214 0.    ]]]]]]
+  l_ijsb (shape (2, 3, 3, 1)):
+[[[[0.1604]
+   [0.1604]
+   [0.1604]]
+
+  [[0.1596]
+   [0.1596]
+   [0.1596]]
+
+  [[0.1604]
+   [0.1604]
+   [0.1604]]]
+
+
+ [[[0.1604]
+   [0.1604]
+   [0.1604]]
+
+  [[0.1596]
+   [0.1596]
+   [0.1596]]
+
+  [[0.1604]
+   [0.1604]
+   [0.1604]]]]
+  fh_ijsb (shape (2, 3, 3, 1)):
+[[[[0.3856]
+   [0.1639]
+   [0.1639]]
+
+  [[0.1648]
+   [0.3861]
+   [0.1648]]
+
+  [[0.1641]
+   [0.1642]
+   [0.3856]]]
+
+
+ [[[0.3854]
+   [0.1638]
+   [0.1638]]
+
+  [[0.1648]
+   [0.3859]
+   [0.1647]]
+
+  [[0.164 ]
+   [0.1641]
+   [0.3854]]]]
+  f_ijsb_sk (shape (2, 3, 3, 1, 3, 2)):
+[[[[[[0.2048 0.4097]
+     [0.2049 0.4098]
+     [0.2051 0.4102]]]
+
+
+   [[[0.2049 0.4098]
+     [0.205  0.4099]
+     [0.2052 0.4103]]]
+
+
+   [[[0.2048 0.4097]
+     [0.2049 0.4097]
+     [0.2051 0.4102]]]]
+
+
+
+  [[[[0.2066 0.4138]
+     [0.206  0.4121]
+     [0.2068 0.4142]]]
+
+
+   [[[0.2057 0.4121]
+     [0.2052 0.4104]
+     [0.206  0.4125]]]
+
+
+   [[[0.2065 0.4136]
+     [0.206  0.4119]
+     [0.2067 0.414 ]]]]
+
+
+
+  [[[[0.2048 0.4097]
+     [0.2049 0.4098]
+     [0.2051 0.4102]]]
+
+
+   [[[0.2049 0.4098]
+     [0.205  0.41  ]
+     [0.2052 0.4104]]]
+
+
+   [[[0.2048 0.4097]
+     [0.2049 0.4098]
+     [0.2051 0.4102]]]]]
+
+
+
+
+ [[[[[0.2048 0.4095]
+     [0.2048 0.4096]
+     [0.205  0.4101]]]
+
+
+   [[[0.2048 0.4096]
+     [0.2049 0.4097]
+     [0.2051 0.4102]]]
+
+
+   [[[0.2048 0.4095]
+     [0.2048 0.4096]
+     [0.205  0.4101]]]]
+
+
+
+  [[[[0.2065 0.4137]
+     [0.206  0.4119]
+     [0.2067 0.414 ]]]
+
+
+   [[[0.2057 0.412 ]
+     [0.2051 0.4103]
+     [0.2059 0.4124]]]
+
+
+   [[[0.2064 0.4135]
+     [0.2059 0.4118]
+     [0.2066 0.4139]]]]
+
+
+
+  [[[[0.2048 0.4095]
+     [0.2049 0.4097]
+     [0.205  0.4101]]]
+
+
+   [[[0.2048 0.4097]
+     [0.205  0.4099]
+     [0.2051 0.4102]]]
+
+
+   [[[0.2048 0.4095]
+     [0.2049 0.4097]
+     [0.205  0.4101]]]]]]
+  H_js (shape (2, 3)):
+[[86.5571 86.5523 86.5331]
+ [86.824  86.82   86.7999]]
+  L_jsb (shape (2, 3, 1)):
+[[[45.7692]
+  [45.7693]
+  [45.7694]]
+
+ [[45.9516]
+  [45.9524]
+  [45.9518]]]
+  Q_jss (shape (2, 3, 2)):
+[[[70.0606  0.    ]
+  [69.9261  0.    ]
+  [70.0467  0.    ]]
+
+ [[70.3399  0.    ]
+  [70.2057  0.    ]
+  [70.3258  0.    ]]]
+  H_jp (shape (3, 1)):
+[[25.782 ]
+ [26.2481]
+ [25.934 ]]
+  H_nn_m (shape (1, 12)):
+[[0.     0.     0.     0.     0.     0.     0.5059 0.506  0.5071 0.5065
+  0.     0.    ]]
+  l_tilde_mn (shape (1, 4)):
+[[1.0839810e+02 9.8409300e+01 3.0371400e+01 9.9999999e+07]]
+  xi_ijsb_k (shape (2, 3, 3, 1, 3)):
+[[[[[1.4036 1.4014 1.4003]]
+
+   [[1.4027 1.4004 1.3993]]
+
+   [[1.4036 1.4013 1.4003]]]
+
+
+  [[[1.4036 1.4014 1.4003]]
+
+   [[1.4027 1.4004 1.3993]]
+
+   [[1.4036 1.4013 1.4003]]]
+
+
+  [[[1.4036 1.4014 1.4003]]
+
+   [[1.4027 1.4004 1.3993]]
+
+   [[1.4036 1.4013 1.4003]]]]
+
+
+
+ [[[[1.404  1.4017 1.4006]]
+
+   [[1.403  1.4008 1.3997]]
+
+   [[1.404  1.4017 1.4006]]]
+
+
+  [[[1.404  1.4017 1.4006]]
+
+   [[1.403  1.4008 1.3997]]
+
+   [[1.404  1.4017 1.4006]]]
+
+
+  [[[1.404  1.4017 1.4006]]
+
+   [[1.403  1.4008 1.3997]]
+
+   [[1.404  1.4017 1.4006]]]]]
+  chi_m_nn_ijsb (shape (1, 12, 2, 3, 3, 1)):
+[[[[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]
+
+
+
+  [[[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]
+
+
+   [[[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]
+
+    [[0.]
+     [0.]
+     [0.]]]]]]
+  mu_ijsb_n (shape (2, 3, 3, 1, 4)):
+[[[[[0.     4.6428 5.232  2.0896]]
+
+   [[4.5769 0.     4.4641 6.6528]]
+
+   [[5.2956 4.6414 0.     7.3744]]]
+
+
+  [[[0.     4.7618 5.2347 2.2783]]
+
+   [[4.4384 0.     4.4634 6.5279]]
+
+   [[5.051  4.7588 0.     7.3314]]]
+
+
+  [[[0.     4.644  5.4597 2.2789]]
+
+   [[4.4391 0.     4.5822 6.514 ]]
+
+   [[5.0482 4.64   0.     7.1397]]]]
+
+
+
+ [[[[0.     4.6437 5.2329 2.091 ]]
+
+   [[4.5779 0.     4.4651 6.6552]]
+
+   [[5.2965 4.6423 0.     7.3767]]]
+
+
+  [[[0.     4.7627 5.2357 2.2797]]
+
+   [[4.4395 0.     4.4644 6.5303]]
+
+   [[5.052  4.7597 0.     7.3338]]]
+
+
+  [[[0.     4.645  5.4606 2.2803]]
+
+   [[4.4402 0.     4.5831 6.5164]]
+
+   [[5.0492 4.6409 0.     7.1421]]]]]
+  mu_ijsb_sk_n (shape (2, 3, 3, 1, 3, 2, 4)):
+[[[[[[[0.     4.5827 5.2278 1.4203]
+      [0.     4.5829 5.2285 1.7078]]
+
+     [[4.3821 0.     4.4061 5.8031]
+      [4.3818 0.     4.4062 6.0906]]
+
+     [[5.0476 4.5808 0.     6.47  ]
+      [5.0469 4.5807 0.     6.7571]]]]
+
+
+
+   [[[[0.     4.5803 5.2254 1.419 ]
+      [0.     4.5805 5.2261 1.7065]]
+
+     [[4.3795 0.     4.4037 5.7993]
+      [4.3792 0.     4.4039 6.0867]]
+
+     [[5.0449 4.5784 0.     6.4661]
+      [5.0443 4.5783 0.     6.7532]]]]
+
+
+
+   [[[[0.     4.5826 5.2278 1.4202]
+      [0.     4.5829 5.2285 1.7076]]
+
+     [[4.382  0.     4.406  5.803 ]
+      [4.3818 0.     4.4062 6.0904]]
+
+     [[5.0475 4.5808 0.     6.4699]
+      [5.0469 4.5806 0.     6.7568]]]]]
+
+
+
+
+  [[[[[0.     4.5827 5.2278 1.4211]
+      [0.     4.5829 5.2285 1.7098]]
+
+     [[4.382  0.     4.4061 5.8037]
+      [4.3818 0.     4.4062 6.0917]]
+
+     [[5.0476 4.5808 0.     6.4709]
+      [5.0469 4.5807 0.     6.7591]]]]
+
+
+
+   [[[[0.     4.5803 5.2254 1.4194]
+      [0.     4.5805 5.2261 1.7076]]
+
+     [[4.3795 0.     4.4037 5.7994]
+      [4.3792 0.     4.4039 6.087 ]]
+
+     [[5.0449 4.5784 0.     6.4665]
+      [5.0443 4.5783 0.     6.7544]]]]
+
+
+
+   [[[[0.     4.5826 5.2278 1.421 ]
+      [0.     4.5829 5.2285 1.7096]]
+
+     [[4.382  0.     4.406  5.8036]
+      [4.3818 0.     4.4062 6.0915]]
+
+     [[5.0475 4.5808 0.     6.4708]
+      [5.0469 4.5806 0.     6.7589]]]]]
+
+
+
+
+  [[[[[0.     4.5827 5.2278 1.42  ]
+      [0.     4.5829 5.2285 1.7071]]
+
+     [[4.3821 0.     4.4061 5.803 ]
+      [4.3818 0.     4.4062 6.0904]]
+
+     [[5.0476 4.5808 0.     6.4699]
+      [5.0469 4.5807 0.     6.757 ]]]]
+
+
+
+   [[[[0.     4.5803 5.2254 1.4189]
+      [0.     4.5805 5.2261 1.7062]]
+
+     [[4.3795 0.     4.4037 5.7993]
+      [4.3792 0.     4.4039 6.0869]]
+
+     [[5.0449 4.5784 0.     6.4662]
+      [5.0443 4.5783 0.     6.7535]]]]
+
+
+
+   [[[[0.     4.5826 5.2278 1.4202]
+      [0.     4.5829 5.2285 1.7074]]
+
+     [[4.382  0.     4.406  5.8032]
+      [4.3818 0.     4.4062 6.0907]]
+
+     [[5.0475 4.5808 0.     6.4701]
+      [5.0469 4.5806 0.     6.7573]]]]]]
+
+
+
+
+
+ [[[[[[0.     4.5836 5.2287 1.4208]
+      [0.     4.5838 5.2294 1.7083]]
+
+     [[4.383  0.     4.4069 5.8046]
+      [4.3828 0.     4.4071 6.092 ]]
+
+     [[5.0486 4.5817 0.     6.4715]
+      [5.0479 4.5816 0.     6.7585]]]]
+
+
+
+   [[[[0.     4.5812 5.2263 1.4195]
+      [0.     4.5814 5.227  1.707 ]]
+
+     [[4.3805 0.     4.4046 5.8007]
+      [4.3802 0.     4.4048 6.0882]]
+
+     [[5.046  4.5793 0.     6.4676]
+      [5.0453 4.5792 0.     6.7546]]]]
+
+
+
+   [[[[0.     4.5835 5.2287 1.4207]
+      [0.     4.5838 5.2294 1.708 ]]
+
+     [[4.383  0.     4.4069 5.8045]
+      [4.3828 0.     4.407  6.0918]]
+
+     [[5.0485 4.5817 0.     6.4713]
+      [5.0479 4.5816 0.     6.7583]]]]]
+
+
+
+
+  [[[[[0.     4.5836 5.2287 1.4216]
+      [0.     4.5838 5.2294 1.7102]]
+
+     [[4.383  0.     4.4069 5.8051]
+      [4.3828 0.     4.4071 6.0931]]
+
+     [[5.0486 4.5817 0.     6.4724]
+      [5.0479 4.5816 0.     6.7605]]]]
+
+
+
+   [[[[0.     4.5812 5.2263 1.4199]
+      [0.     4.5814 5.227  1.7081]]
+
+     [[4.3805 0.     4.4046 5.8008]
+      [4.3802 0.     4.4048 6.0884]]
+
+     [[5.0459 4.5793 0.     6.468 ]
+      [5.0453 4.5792 0.     6.7558]]]]
+
+
+
+   [[[[0.     4.5835 5.2287 1.4215]
+      [0.     4.5838 5.2294 1.71  ]]
+
+     [[4.383  0.     4.4069 5.805 ]
+      [4.3828 0.     4.407  6.0929]]
+
+     [[5.0485 4.5817 0.     6.4722]
+      [5.0479 4.5816 0.     6.7603]]]]]
+
+
+
+
+  [[[[[0.     4.5836 5.2287 1.4205]
+      [0.     4.5838 5.2294 1.7076]]
+
+     [[4.383  0.     4.4069 5.8045]
+      [4.3828 0.     4.4071 6.0918]]
+
+     [[5.0486 4.5817 0.     6.4714]
+      [5.0479 4.5816 0.     6.7585]]]]
+
+
+
+   [[[[0.     4.5812 5.2263 1.4194]
+      [0.     4.5814 5.227  1.7067]]
+
+     [[4.3805 0.     4.4046 5.8008]
+      [4.3802 0.     4.4048 6.0884]]
+
+     [[5.0459 4.5793 0.     6.4677]
+      [5.0453 4.5792 0.     6.755 ]]]]
+
+
+
+   [[[[0.     4.5835 5.2287 1.4206]
+      [0.     4.5838 5.2294 1.7079]]
+
+     [[4.383  0.     4.4069 5.8046]
+      [4.3828 0.     4.407  6.0921]]
+
+     [[5.0485 4.5817 0.     6.4716]
+      [5.0479 4.5816 0.     6.7588]]]]]]]
+  nu_s_ij_n (shape (2, 3, 3, 4)):
+[[[[ 1.5556 -1.9316 -1.9249  1.3911]
+   [-1.1635  1.5586 -1.7682 -1.213 ]
+   [-1.1767 -1.8942  1.5559 -1.2237]]
+
+  [[ 1.5556 -1.9316 -1.9249  1.3911]
+   [-1.1635  1.5586 -1.7682 -1.213 ]
+   [-1.1767 -1.8942  1.5559 -1.2237]]
+
+  [[ 1.5556 -1.9316 -1.9249  1.3911]
+   [-1.1635  1.5586 -1.7682 -1.213 ]
+   [-1.1767 -1.8942  1.5559 -1.2237]]]
+
+
+ [[[ 0.     -3.3484 -3.3414 -0.0881]
+   [-2.5146  0.     -3.1824 -2.5014]
+   [-2.5257 -3.3015  0.     -2.5098]]
+
+  [[ 0.     -3.3484 -3.3414 -0.0881]
+   [-2.5146  0.     -3.1824 -2.5014]
+   [-2.5257 -3.3015  0.     -2.5098]]
+
+  [[ 0.     -3.3484 -3.3414 -0.0881]
+   [-2.5146  0.     -3.1824 -2.5014]
+   [-2.5257 -3.3015  0.     -2.5098]]]]
+  mu_0js_n (shape (2, 3, 4)):
+[[[0.     2.6863 3.2516 0.0881]
+  [2.01   0.     2.5341 2.1175]
+  [2.6048 2.6561 0.     2.7497]]
+
+ [[0.     2.6863 3.2516 0.0881]
+  [2.01   0.     2.5341 2.1175]
+  [2.6048 2.6561 0.     2.7497]]]
+  Qhat_nn (shape (12,)):
+[1.0533 1.0629 1.063  1.0497 1.0537 1.0632 1.0506 1.0606 1.0606 1.0471
+ 0.3283 0.3285]
+  yP_k (shape (3,)):
+[199.1225 201.3962 199.4813]
+  Q_mB_nn (shape (1, 12)):
+[[0.     0.     0.     0.     0.     0.     1.0506 1.0606 1.0606 1.0471
+  0.     0.    ]]
+  gamma_nn (shape (12,)):
+[3.3311 3.3943 3.3943 3.2651 3.338  3.3928 3.3689 3.4408 3.4397 3.3043
+ 0.088  0.088 ]
+  gamma_park_k (shape (3,)):
+[0.6563 0.6543 0.6545]
+  gamma_board_m_nn (shape (1, 12)):
+[[0.     0.     0.     0.     0.     0.     0.0598 0.0604 0.0601 0.0591
+  0.     0.    ]]
+  I_nn (shape (12,)):
+[0.9923 0.9923 0.9923 0.9923 0.9923 0.9923 0.9876 0.9876 0.9876 0.9876
+ 0.9938 0.9938]
+  l_bar_res (shape (3, 1)):
+[[1.6069]
+ [1.6111]
+ [1.606 ]]
+  l_bar_nonres (shape (3, 1)):
+[[2.5132]
+ [2.5132]
+ [2.5132]]
+  l_bar_park (shape (3, 1)):
+[[1.2786]
+ [1.2786]
+ [1.2786]]
+  Y_pk (shape (3, 1)):
+[[27.6378]
+ [27.9634]
+ [27.7421]]
+  V_m_nn (shape (1, 12)):
+[[0.     0.     0.     0.     0.     0.     1.7543 1.7548 1.7583 1.7566
+  0.     0.    ]]
+  lambda_fleet_m (shape (1,)):
+[0.]
+  lambda_vcons_mn (shape (1, 4)):
+[[-0.  0. -0.  0.]]
+  beta: 0

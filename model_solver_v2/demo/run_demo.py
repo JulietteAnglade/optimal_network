@@ -5,6 +5,7 @@ non-residential / 1 parking building type, 1 transit mode, on a small
 
 Run with: python -m model_solver_v2.demo.run_demo
 """
+import dataclasses
 import sys
 from pathlib import Path
 
@@ -72,7 +73,7 @@ def build_params(network):
         transit_vehicle_production=transit_vehicle_production, station_capacity=station_capacity,
         congestion_time=congestion_time, iceberg_tau=iceberg_tau,
         parking_search_time=parking_search_time, boarding_time=boarding_time, waiting_time=waiting_time,
-        H_bar=10.0, L_bar=np.full(I, 100.0), q_bar=300.0, q_bar_0=50.0, K=1000.0,
+        H_bar=1.0, L_bar=np.full(I, 100.0), q_bar=300.0, q_bar_0=50.0, K=50.0,
         is_gateway=np.array([True, False, False]),
         wage_parking=np.full(I, 1.0),
         V_bar_m=np.full(M, 50.0), H_allocated_m=np.full(M, 20.0),
@@ -87,6 +88,28 @@ def build_params(network):
     )
 
 
+# Bookkeeping/cache fields on ModelState that aren't named decision variables
+# in algorithm.tex's Tables 1-2 (SA search state, and the derived routing-flow
+# caches documented in state.py) -- excluded from the decision-variable dump.
+_NON_DECISION_FIELDS = {
+    'sa_temperature', 'sa_best_I', 'sa_best_objective',
+    'flow_time_weighted_nn', 'flow_raw_nn', 'flow_goods_nn_s',
+    'flow_goods_value_nn_s', 'car_flow_imbalance_ijsb_k',
+}
+
+
+def print_all_decision_variables(state):
+    print("\nFinal state -- all decision variables:")
+    for f in dataclasses.fields(state):
+        if f.name in _NON_DECISION_FIELDS:
+            continue
+        value = getattr(state, f.name)
+        if isinstance(value, np.ndarray):
+            print(f"  {f.name} (shape {value.shape}):\n{np.round(value, 4)}")
+        else:
+            print(f"  {f.name}: {value:.6g}" if isinstance(value, float) else f"  {f.name}: {value}")
+
+
 def main():
     network = build_network()
     params = build_params(network)
@@ -96,25 +119,29 @@ def main():
     # primitives involve reciprocal terms (parking search time ~ 1/S,
     # Cobb-Douglas inverse demand ~ 1/price); small steps keep the demo
     # inside the well-behaved region long enough to show every block
-    # firing. Reaching genuine multi-cycle convergence on a specific
-    # scenario is a calibration exercise, not an algorithmic one.
-    algo = AlgoParams(T_inner=8, T_outer=4, alpha_x=0.002, alpha_lambda=0.002,
+    # firing. alpha_lambda is set to 1/10 of alpha_x: equal primal/dual
+    # step sizes let the two race at the same speed, a classic source of
+    # sustained oscillation in gradient-ascent-descent on a saddle-point
+    # problem -- decoupling them onto separate timescales (dual much
+    # slower, so it tracks the primal's near-equilibrium value instead of
+    # chasing it) settles the residual to ~0.1 instead of oscillating in
+    # the hundreds.
+    algo = AlgoParams(T_inner=10, T_outer=1000, alpha_x=0.002, alpha_lambda=0.0002,
                       alpha_l=0.01, alpha_Y=0.01, alpha_V=0.01, alpha_I=0.01, alpha_beta=0.01,
-                      routing_mode="discrete")
+                      routing_mode="continuous")
+
+    print("Outer-loop progress (live):")
+
+    def report_progress(entry):
+        r = entry['residual']
+        print(f"  K={entry['K']:3d}  residual={r['value']:.6f}  "
+              f"responsible={r['variable']}{r['index']}  "
+              f"msa_iters={entry['msa_iters']}  inner_iters={entry['inner_iters']}", flush=True)
 
     solver = GeneralizedSpatialEquilibriumSolver()
-    solver.solve(state, params, algo)
+    solver.solve(state, params, algo, progress_callback=report_progress)
 
-    print("Outer-loop history:")
-    for entry in solver.history:
-        print(f"  K={entry['K']:2d}  residual={entry['residual']:.6f}  inner_iters={entry['inner_iters']}")
-
-    print("\nFinal state summary:")
-    print(f"  Q_hat_nn (edge flows): {np.round(state.Qhat_nn, 3)}")
-    print(f"  I_nn (infrastructure): {np.round(state.I_nn, 3)}")
-    print(f"  beta (capital shadow price): {state.beta:.4f}")
-    print(f"  q_bar_s (population by sector): {np.round(state.q_bar_s, 3)}")
-    print(f"  Y_js (sector output): {np.round(state.Y_js, 3)}")
+    print_all_decision_variables(state)
 
 
 if __name__ == "__main__":

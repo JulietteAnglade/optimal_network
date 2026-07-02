@@ -16,7 +16,7 @@ class GeneralizedSpatialEquilibriumSolver:
     def history(self):
         return self.outer_block.history
 
-    def solve(self, initial_state: ModelState, params: ModelParams, algo: AlgoParams) -> ModelState:
+    def solve(self, initial_state: ModelState, params: ModelParams, algo: AlgoParams, progress_callback=None) -> ModelState:
         state = initial_state
-        state = self.outer_block.solve(state, params, algo)
+        state = self.outer_block.solve(state, params, algo, progress_callback=progress_callback)
         return state

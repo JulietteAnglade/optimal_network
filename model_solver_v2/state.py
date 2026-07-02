@@ -164,7 +164,18 @@ class ModelState:
             l_tilde_res=np.zeros((I, Br)),
             l_tilde_nonres=np.zeros((I, Bnr)),
             l_tilde_park=np.zeros((I, P)),
-            Y_js=np.full((S, I), 1.0),
+            # Anchored to the aggregate-demand scale (q_bar/n_sectors) rather
+            # than an arbitrary constant: eq. 29-30 makes H_j^s/L_j^{sb}/Q_j^{ss'}
+            # proportional to Y_j^s (the "given production target" shortcut),
+            # and with decreasing-returns Cobb-Douglas (sum of elasticities < 1)
+            # F(H,L,Q) scales as Y_j^s^{<1}, which *exceeds* Y_j^s whenever
+            # Y_j^s < 1 -- pushing pi_j^s (eq. 51) down and Y_j^s (eq. 34) down
+            # further, an inescapable runaway collapse once Y_j^s dips under 1.
+            # Starting near the population's actual consumption scale avoids
+            # ever entering that regime; erring larger is safe (oversupply
+            # just lowers price, no analogous multiplicative trap), so no
+            # upper guard is needed, only a floor for pathologically small q_bar.
+            Y_js=np.full((S, I), max(params.q_bar / S, 1.0)),
             Q_ij_s=np.zeros((S, I, I)),
             Qtilde_ij_s=np.zeros((S, I, I)),
             q0_js=np.zeros((S, I)),

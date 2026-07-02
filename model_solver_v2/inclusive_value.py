@@ -70,7 +70,12 @@ class InclusiveValueBlock:
                             mu_at_k[s, i, j, b, k, :] = state.mu_ijsb_sk_n[s, i, j, b, k, :, k_node]
                             mu_at_i[s, i, j, b, k, :] = state.mu_ijsb_sk_n[s, i, j, b, k, :, i_node]
 
-        V_sk = flow_term - (mu_at_k - mu_at_i)
+        # routing.py's mu is stored "cost-to-destination" (mu_destination=0,
+        # mu_origin=full trip cost), the mirror of eq. 5/7/8's implicit
+        # "cost-from-origin" convention (mu_origin=0, mu_destination=full
+        # cost) -- see the note in inner_loop.py's eq. 37 for the derivation.
+        # Every document term (mu_X - mu_Y) becomes (mu_Y - mu_X) here.
+        V_sk = flow_term + (mu_at_k - mu_at_i)
         self.V_sk = V_sk
 
         # ---- Step 3: activity-sector inclusive value, eq. 15 ----
@@ -101,9 +106,13 @@ class InclusiveValueBlock:
         w_jb = state.w_js[:, None, :, None]              # (S,1,I,1)
         omega_A_sum = np.einsum('a,sijba->sijb', params.omega_sprime, A_sp)
 
+        # (mu_n_at_j - mu_n_at_i) sign: see the note above V_sk / in
+        # inner_loop.py's eq. 37 -- routing.py's stored mu is the mirror of
+        # the document's implicit convention, so the document's -(mu_j-mu_i)
+        # becomes +(mu_j-mu_i) here.
         V_ijsb = (U_val - r_res * state.l_ijsb
                   - c_cost
-                  - (mu_n_at_j - mu_n_at_i)
+                  + (mu_n_at_j - mu_n_at_i)
                   - rho_jb * (state.h_ijsb + state.fh_ijsb - params.H_bar)
                   + w_jb * state.h_ijsb
                   + omega_A_sum)
